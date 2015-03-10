@@ -1,0 +1,12 @@
+﻿<Properties StartupItem="YouthSongbook\YouthSongbook.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Android.Min4" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="YouthSongbook\Data.cs">
+    <Files>
+      <File FileName="YouthSongbook\Data.cs" Line="15" Column="15" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
