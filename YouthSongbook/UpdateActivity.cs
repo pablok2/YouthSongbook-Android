@@ -26,8 +26,8 @@ namespace YouthSongbook
             chordsCheckBox = FindViewById<CheckBox>(Resource.Id.chordsCheckBox);
 
             // Set the chordsCheckBox if the current database is chords
-            bool chordsActive = SongData.ChordsActive();
-            chordsCheckBox.Selected = chordsActive;
+            bool chordsActive = SongData.GetChords();
+            chordsCheckBox.Checked = chordsActive;
 
             // Async update button
             updateButton.Click += async (o, e) =>

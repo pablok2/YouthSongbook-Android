@@ -16,6 +16,7 @@ namespace YouthSongbook
     {
         ListView listView;
         string[] songNames;
+        bool chordsEnabled;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -36,6 +37,7 @@ namespace YouthSongbook
             {
                 Intent intent = new Intent(this, typeof(SongActivity));
                 intent.PutExtra("SONG_NAME", songNames[e.Position]);
+                intent.PutExtra("CHORDS", chordsEnabled);
                 this.StartActivity(intent);
             };
         }
@@ -45,10 +47,10 @@ namespace YouthSongbook
             base.OnResume();
 
             // Get the chords flag
-            bool chords = SongData.ChordsActive();
+            chordsEnabled = SongData.GetChords();
 
             // Reload
-            songNames = SongData.GetAllTitles(chords);
+            songNames = SongData.GetAllTitles(chordsEnabled);
             listView.Adapter = new ArrayAdapter<String>(this, Android.Resource.Layout.SimpleListItem1, songNames);
         }
 

@@ -56,15 +56,15 @@ namespace YouthSongbook
 
                 // Initialize chords database to be off
                 string initChordsSQL = "INSERT INTO CHORDFLAG (Flag) VALUES (@Flag);";
-                cmd.Parameters.AddWithValue("@Flag", "0");
                 cmd.CommandText = initChordsSQL;
+                cmd.Parameters.AddWithValue("@Flag", "0");
                 cmd.ExecuteNonQuery();
             }
 
             connection.Close();
         }
 
-        public static bool ChordsActive()
+        public static bool GetChords()
         {
             string chordsFlag = "0";
 
@@ -103,11 +103,9 @@ namespace YouthSongbook
                 using (SqliteCommand cmd = connection.CreateCommand())
                 {
                     // Initialize chords database to be off
-                    string chordsSQL = "INSERT INTO CHORDFLAG (Flag) VALUES (@Flag);";
                     string flag = chords ? "1" : "0";
-
+                    string chordsSQL = "UPDATE CHORDFLAG SET Flag = \"" + flag + "\" WHERE Id = 1;";
                     cmd.CommandText = chordsSQL;
-                    cmd.Parameters.AddWithValue("@Flag", flag);
                     cmd.ExecuteNonQuery();
                 }
             }
@@ -140,9 +138,10 @@ namespace YouthSongbook
             return titles.ToArray();
         }
 
-        public static string GetSong(string title)
+        public static string GetSong(string title, bool chords)
         {
-            string sql = "SELECT Body FROM ITEMS WHERE Title = \""
+            string table = chords ? "CHORDS" : "ITEMS";
+            string sql = "SELECT Body FROM " + table + " WHERE Title = \""
                 + title + "\";";
 
             string song = string.Empty;
@@ -163,6 +162,7 @@ namespace YouthSongbook
                     }
                 }
             }
+
             return song;
         }
         

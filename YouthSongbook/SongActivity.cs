@@ -23,12 +23,14 @@ namespace YouthSongbook
             SetContentView(Resource.Layout.SongLayout);
             songText = FindViewById<TextView>(Resource.Id.songText);
 
-            // Get the song title from the intent and set the title
+            // Get the song title and chords from the intent and set the title
             string songName = Intent.GetStringExtra("SONG_NAME");
+            bool chords = Intent.GetBooleanExtra("CHORDS", false);
+
             Title = songName;
 
             // Populate the test view with the song
-            songText.SetText(SongData.GetSong(songName), TextView.BufferType.Normal);
+            songText.SetText(SongData.GetSong(songName, chords), TextView.BufferType.Normal);
         }
     }
 }
