@@ -36,27 +36,89 @@ namespace YouthSongbook
         private static void CreateDatabase(SqliteConnection connection)
         {
             // Create table statements
-            string sql = "CREATE TABLE ITEMS (Id INTEGER PRIMARY KEY AUTOINCREMENT, Title ntext, Body ntext);";
-            string sqlUpdate = "CREATE TABLE UPDATENUM (Id INTEGER PRIMARY KEY AUTOINCREMENT, Number ntext);";
+            List<string> createTablesList = new List<string>();
+
+            createTablesList.Add("CREATE TABLE ITEMS (Id INTEGER PRIMARY KEY AUTOINCREMENT, Title ntext, Body ntext);");
+            createTablesList.Add("CREATE TABLE CHORDS (Id INTEGER PRIMARY KEY AUTOINCREMENT, Title ntext, Body ntext);");
+            createTablesList.Add("CREATE TABLE UPDATENUM (Id INTEGER PRIMARY KEY AUTOINCREMENT, Number ntext);");
+            createTablesList.Add("CREATE TABLE CHORDFLAG (Id INTEGER PRIMARY KEY AUTOINCREMENT, Flag ntext);");
 
             connection.Open();
 
             using (SqliteCommand cmd = connection.CreateCommand())
             {
                 // Create the tables
-                cmd.CommandText = sql;
-                cmd.ExecuteNonQuery();
-                cmd.CommandText = sqlUpdate;
+                foreach (string sql in createTablesList)
+                {
+                    cmd.CommandText = sql;
+                    cmd.ExecuteNonQuery();
+                }
+
+                // Initialize chords database to be off
+                string initChordsSQL = "INSERT INTO CHORDFLAG (Flag) VALUES (@Flag);";
+                cmd.Parameters.AddWithValue("@Flag", "0");
+                cmd.CommandText = initChordsSQL;
                 cmd.ExecuteNonQuery();
             }
 
             connection.Close();
         }
 
-        public static string[] GetAllTitles()
+        public static bool ChordsActive()
         {
-            string sql = "SELECT Title FROM ITEMS;";
+            string chordsFlag = "0";
+
+            // Create and open a database connection
+            using (SqliteConnection connection = GetConnection())
+            {
+                connection.Open();
+
+                string chordsSelect = "SELECT Flag FROM CHORDFLAG WHERE Id = 1;";
+
+                // Read the chords table
+                using (SqliteCommand cmd = connection.CreateCommand())
+                {
+                    cmd.CommandText = chordsSelect;
+
+                    using (SqliteDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            chordsFlag = reader.GetString(0);
+                        }
+                    }
+                }
+            }
+
+            // Return the chords flag
+            return chordsFlag.Equals("1");
+        }
+
+        public static void SetChords(bool chords)
+        {
+            using (SqliteConnection connection = GetConnection())
+            {
+                connection.Open();
+
+                using (SqliteCommand cmd = connection.CreateCommand())
+                {
+                    // Initialize chords database to be off
+                    string chordsSQL = "INSERT INTO CHORDFLAG (Flag) VALUES (@Flag);";
+                    string flag = chords ? "1" : "0";
+
+                    cmd.CommandText = chordsSQL;
+                    cmd.Parameters.AddWithValue("@Flag", flag);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public static string[] GetAllTitles(bool chords)
+        {
+            string table = chords ? "CHORDS" : "ITEMS";
+            string sql = "SELECT Title FROM "+ table+ ";";
             List<string> titles = new List<string>();
+
             using (SqliteConnection conn = GetConnection())
             {
                 conn.Open();
@@ -74,6 +136,7 @@ namespace YouthSongbook
                     }
                 }
             }
+
             return titles.ToArray();
         }
 
@@ -103,14 +166,16 @@ namespace YouthSongbook
             return song;
         }
         
-        public static void UpdateSongs(string updateNumber, Dictionary<string,string> dict)
+        public static void UpdateSongs(string updateNumber, Dictionary<string,string> dict, bool chords)
         {
             // Create and open a database connection
             SqliteConnection connection = GetConnection();
             connection.Open();
+
+            string table = chords ? "CHORDS" : "ITEMS";
             
             // Insert statements
-            string sql = "INSERT INTO ITEMS (Title, Body) VALUES (@Title, @Body);";
+            string sql = "INSERT INTO " + table + " (Title, Body) VALUES (@Title, @Body);";
             string sqlInitUpdate = "INSERT INTO UPDATENUM (Number) VALUES (@Number);";
 
             // Incoming json values
@@ -180,7 +245,7 @@ namespace YouthSongbook
             }
         }
 
-        public static void LoadDatabase(Stream asset)
+        public static void LoadDatabase(Stream asset, bool chords)
         {
             // Get the initial asset Json file
             string content;
@@ -189,7 +254,7 @@ namespace YouthSongbook
                 content = sr.ReadToEnd();
             }
 
-            UpdateSongs("0", SongNetwork.JsonToDictionary(JObject.Parse((content))));
+            UpdateSongs("0", SongNetwork.JsonToDictionary(JObject.Parse((content))), chords);
         }
     }
 }

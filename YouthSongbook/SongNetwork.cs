@@ -45,8 +45,17 @@ namespace YouthSongbook
 
                 if (updateValid)
                 {
-                    string updateJsonURL = baseURL + updates[updateNumber];
-                    SongData.UpdateSongs(updateNumber, JsonToDictionary(await FetchDataAsync(updateJsonURL)));
+                    string jsonFileName = updates[updateNumber];
+                    string updateJsonURL = baseURL + jsonFileName;
+
+                    if (jsonFileName.Contains("chords"))
+                    {
+                        SongData.UpdateSongs(updateNumber, JsonToDictionary(await FetchDataAsync(updateJsonURL)), true);
+                    }
+                    else
+                    {
+                        SongData.UpdateSongs(updateNumber, JsonToDictionary(await FetchDataAsync(updateJsonURL)), false);
+                    }
                 }
             }
 

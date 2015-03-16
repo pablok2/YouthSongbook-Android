@@ -22,7 +22,8 @@ namespace YouthSongbook
             // Check for a living database and create if need be
             if(!SongData.DataBaseExists)
             {
-                SongData.LoadDatabase(Assets.Open("songs.json"));
+                SongData.LoadDatabase(Assets.Open("songs.json"), false);
+                SongData.LoadDatabase(Assets.Open("songsChords.json"), true);
             }
             
             // Hook up the views
@@ -43,8 +44,11 @@ namespace YouthSongbook
         {
             base.OnResume();
 
+            // Get the chords flag
+            bool chords = SongData.ChordsActive();
+
             // Reload
-            songNames = SongData.GetAllTitles();
+            songNames = SongData.GetAllTitles(chords);
             listView.Adapter = new ArrayAdapter<String>(this, Android.Resource.Layout.SimpleListItem1, songNames);
         }
 

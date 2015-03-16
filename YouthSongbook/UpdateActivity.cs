@@ -14,24 +14,43 @@ namespace YouthSongbook
     [Activity(Label = "Settings", Icon = "@drawable/icon", Theme = "@android:style/Theme.Holo.Light")]
     public class UpdateActivity : Activity
     {
-        Button button;
+        Button updateButton;
+        CheckBox chordsCheckBox;
 
         protected override void OnCreate(Bundle bundle)
         {   
             // Hook up the view
             base.OnCreate(bundle);
             SetContentView(Resource.Layout.UpdateLayout);
-            button = FindViewById<Button>(Resource.Id.updateButton);
+            updateButton = FindViewById<Button>(Resource.Id.updateButton);
+            chordsCheckBox = FindViewById<CheckBox>(Resource.Id.chordsCheckBox);
+
+            // Set the chordsCheckBox if the current database is chords
+            bool chordsActive = SongData.ChordsActive();
+            chordsCheckBox.Selected = chordsActive;
 
             // Async update button
-            button.Click += async (sender, e) =>
+            updateButton.Click += async (o, e) =>
                     {
                         await SongNetwork.PerformUpdateAsync();
+                        Toast.MakeText(this, "Finished Updating", ToastLength.Short).Show();
                         Finish();
                     };
-            
-            // Need to change this class to have a progress
-            // or spinny thingy while it's updating.
+
+            // Setting the chords database
+            chordsCheckBox.Click += (o, e) =>
+            {
+                if (chordsCheckBox.Checked)
+                {
+                    SongData.SetChords(true);
+                    Toast.MakeText(this, "Enabled Chords", ToastLength.Short).Show();
+                }
+                else
+                {
+                    SongData.SetChords(false);
+                    Toast.MakeText(this, "Disabled Chords", ToastLength.Short).Show();
+                }
+            };
         }
     }
 }

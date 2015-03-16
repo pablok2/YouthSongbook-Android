@@ -76,6 +76,9 @@ namespace YouthSongbook
 		public partial class Id
 		{
 			
+			// aapt resource value: 0x7f060005
+			public const int chordsCheckBox = 2131099653;
+			
 			// aapt resource value: 0x7f060000
 			public const int list = 2131099648;
 			
