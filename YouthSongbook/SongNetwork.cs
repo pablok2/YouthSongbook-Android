@@ -13,20 +13,20 @@ namespace YouthSongbook
     {
         private static async Task<JObject> FetchDataAsync(string url)
         {
-            // Create an HTTP web request using the URL:
-            HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(new Uri(url));
+            //// Create an HTTP web request using the URL:
+            var request = WebRequest.Create(url);
+            var response = (HttpWebResponse)await Task.Factory
+                .FromAsync<WebResponse>(request.BeginGetResponse,
+                                        request.EndGetResponse,
+                                        null);
 
-            // Send the request to the server and wait for the response:
-            using (WebResponse response = await request.GetResponseAsync())
+            // Get a stream representation of the HTTP web response:
+            using (Stream stream = response.GetResponseStream())
+            using (StreamReader sr = new StreamReader(stream))
             {
-                // Get a stream representation of the HTTP web response:
-                using (Stream stream = response.GetResponseStream())
-                using (StreamReader sr = new StreamReader(stream))
-                {
-                    // Read the Stream and parse the json
-                    JObject json = JObject.Parse(await Task.Run(() => sr.ReadToEndAsync()));
-                    return json;
-                }
+                // Read the Stream and parse the json
+                JObject json = JObject.Parse(await Task.Run(() => sr.ReadToEndAsync()));
+                return json;
             }
         }
 

@@ -4,6 +4,7 @@ using Mono.Data.Sqlite;
 using System.Threading.Tasks;
 using System.IO;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace YouthSongbook
 {
@@ -37,7 +38,6 @@ namespace YouthSongbook
         {
             // Create table statements
             List<string> createTablesList = new List<string>();
-
             createTablesList.Add("CREATE TABLE ITEMS (Id INTEGER PRIMARY KEY AUTOINCREMENT, Title ntext, Body ntext);");
             createTablesList.Add("CREATE TABLE CHORDS (Id INTEGER PRIMARY KEY AUTOINCREMENT, Title ntext, Body ntext);");
             createTablesList.Add("CREATE TABLE UPDATENUM (Id INTEGER PRIMARY KEY AUTOINCREMENT, Number ntext);");
@@ -73,11 +73,10 @@ namespace YouthSongbook
             {
                 connection.Open();
 
-                string chordsSelect = "SELECT Flag FROM CHORDFLAG WHERE Id = 1;";
-
-                // Read the chords table
                 using (SqliteCommand cmd = connection.CreateCommand())
                 {
+                    // Read the chords table
+                    string chordsSelect = "SELECT Flag FROM CHORDFLAG WHERE Id = 1;";
                     cmd.CommandText = chordsSelect;
 
                     using (SqliteDataReader reader = cmd.ExecuteReader())
@@ -108,13 +107,13 @@ namespace YouthSongbook
                     cmd.CommandText = chordsSQL;
                     cmd.ExecuteNonQuery();
                 }
+
+                connection.Close();
             }
         }
 
         public static string[] GetAllTitles(bool chords)
         {
-            string table = chords ? "CHORDS" : "ITEMS";
-            string sql = "SELECT Title FROM "+ table+ ";";
             List<string> titles = new List<string>();
 
             using (SqliteConnection conn = GetConnection())
@@ -123,6 +122,8 @@ namespace YouthSongbook
 
                 using (SqliteCommand cmd = conn.CreateCommand())
                 {
+                    string table = chords ? "CHORDS" : "ITEMS";
+                    string sql = "SELECT Title FROM " + table + " ORDER BY Title ASC;";
                     cmd.CommandText = sql;
 
                     using (SqliteDataReader reader = cmd.ExecuteReader())
@@ -139,18 +140,18 @@ namespace YouthSongbook
         }
 
         public static string GetSong(string title, bool chords)
-        {
-            string table = chords ? "CHORDS" : "ITEMS";
-            string sql = "SELECT Body FROM " + table + " WHERE Title = \""
-                + title + "\";";
-
+        {   
             string song = string.Empty;
+
             using (SqliteConnection conn = GetConnection())
             {
                 conn.Open();
 
                 using (SqliteCommand cmd = conn.CreateCommand())
                 {
+                    string table = chords ? "CHORDS" : "ITEMS";
+                    string sql = "SELECT Body FROM " + table + " WHERE Title = \""
+                        + title + "\";";
                     cmd.CommandText = sql;
 
                     using (var reader = cmd.ExecuteReader())
@@ -161,6 +162,8 @@ namespace YouthSongbook
                         }
                     }
                 }
+
+                conn.Close();
             }
 
             return song;
@@ -169,80 +172,84 @@ namespace YouthSongbook
         public static void UpdateSongs(string updateNumber, Dictionary<string,string> dict, bool chords)
         {
             // Create and open a database connection
-            SqliteConnection connection = GetConnection();
-            connection.Open();
-
-            string table = chords ? "CHORDS" : "ITEMS";
-            
-            // Insert statements
-            string sql = "INSERT INTO " + table + " (Title, Body) VALUES (@Title, @Body);";
-            string sqlInitUpdate = "INSERT INTO UPDATENUM (Number) VALUES (@Number);";
-
-            // Incoming json values
-            foreach (string key in dict.Keys)
+            using (SqliteConnection connection = GetConnection())
             {
-                string value = dict[key];
-                    
+                connection.Open();
+
                 using (SqliteCommand cmd = connection.CreateCommand())
                 {
-                    cmd.CommandText = sql;
-                    cmd.Parameters.AddWithValue("@Title", key);
-                    cmd.Parameters.AddWithValue("@Body", value);
+                    // Insert statements
+                    string table = chords ? "CHORDS" : "ITEMS";
+                    string sql = "INSERT INTO " + table + " (Title, Body) VALUES (@Title, @Body);";
+
+                    // Incoming json values
+                    foreach (string key in dict.Keys)
+                    {
+                        string value = dict[key];
+                        cmd.CommandText = sql;
+                        cmd.Parameters.AddWithValue("@Title", key);
+                        cmd.Parameters.AddWithValue("@Body", value);
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    // Initialize update data
+                    string sqlInitUpdate = "INSERT INTO UPDATENUM (Number) VALUES (@Number);";
+                    cmd.CommandText = sqlInitUpdate;
+                    cmd.Parameters.AddWithValue("@Number", updateNumber);
                     cmd.ExecuteNonQuery();
                 }
-            }
 
-            // Update the update table
-            using (SqliteCommand cmd = connection.CreateCommand())
-            {
-                // Initialize update data
-                cmd.CommandText = sqlInitUpdate;
-                cmd.Parameters.AddWithValue("@Number", updateNumber);
-                cmd.ExecuteNonQuery();
+                connection.Close();
             }
-
-            connection.Close();
         }
 
         public static bool CheckUpdate(int number)
         {
+            bool update = false;
+
             // Create and open a database connection
-            SqliteConnection connection = GetConnection();
-            connection.Open();
+            using (SqliteConnection connection = GetConnection())
+            { 
+                connection.Open();
 
-            int updateNumber = 0;
-            string updateSelect = "SELECT Number FROM UPDATENUM WHERE Id = 1;";
+                int updateNumber = 0;
+                string updateSelect = "SELECT Number FROM UPDATENUM WHERE Id = 1;";
 
-            // Read the update table
-            using (SqliteCommand cmd = connection.CreateCommand())
-            {
-                cmd.CommandText = updateSelect;
-
-                using (SqliteDataReader reader = cmd.ExecuteReader())
+                // Read the update table
+                using (SqliteCommand cmd = connection.CreateCommand())
                 {
-                    while (reader.Read())
+                    cmd.CommandText = updateSelect;
+
+                    using (SqliteDataReader reader = cmd.ExecuteReader())
                     {
-                        string s = reader.GetString(0);
-                        updateNumber = int.Parse(s);
+                        while (reader.Read())
+                        {
+                            string s = reader.GetString(0);
+                            updateNumber = int.Parse(s);
+                        }
+                    }
+
+                    // Update the table if need be
+                    if (updateNumber < number)
+                    {
+                        string sqlInitUpdate = "UPDATE UPDATENUM SET Number = \"" +
+                            (updateNumber + 1).ToString() +
+                            "\" WHERE Id = 1;";
+                        cmd.CommandText = sqlInitUpdate;
+                        cmd.ExecuteNonQuery();
+
+                        update = true;
+                    }
+                    else
+                    {
+                        update = false;
                     }
                 }
 
-                // Update the table if need be
-                if (updateNumber < number)
-                {
-                    string sqlInitUpdate = "UPDATE UPDATENUM SET Number = \"" +
-                        (updateNumber + 1).ToString() +
-                        "\" WHERE Id = 1;";
-                    cmd.CommandText = sqlInitUpdate;
-                    cmd.ExecuteNonQuery();
-
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                connection.Close();
             }
+
+            return update;
         }
 
         public static void LoadDatabase(Stream asset, bool chords)

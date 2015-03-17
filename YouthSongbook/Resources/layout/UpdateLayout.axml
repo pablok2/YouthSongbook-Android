@@ -13,5 +13,6 @@
         p1:layout_width="383.6dp"
         p1:layout_height="wrap_content"
         p1:layout_below="@id/updateButton"
-        p1:id="@+id/chordsCheckBox" />
+        p1:id="@+id/chordsCheckBox"
+        p1:layout_marginTop="45px" />
 </RelativeLayout>
