@@ -4,7 +4,6 @@ using Mono.Data.Sqlite;
 using System.Threading.Tasks;
 using System.IO;
 using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
 
 namespace YouthSongbook
 {

@@ -34,7 +34,6 @@ namespace YouthSongbook
                     {
                         await SongNetwork.PerformUpdateAsync();
                         Toast.MakeText(this, "Finished Updating", ToastLength.Short).Show();
-                        //Finish();
                     };
 
             // Setting the chords database
