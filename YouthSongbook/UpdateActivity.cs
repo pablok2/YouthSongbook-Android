@@ -32,8 +32,15 @@ namespace YouthSongbook
             // Async update button
             updateButton.Click += async (o, e) =>
                     {
-                        await SongNetwork.PerformUpdateAsync();
-                        Toast.MakeText(this, "Finished Updating", ToastLength.Short).Show();
+                        try
+                        {
+                            await SongNetwork.PerformUpdateAsync();
+                            Toast.MakeText(this, "Finished Updating", ToastLength.Short).Show();
+                        }
+                        catch(Exception)
+                        {
+                            Toast.MakeText(this, "Unable to Update", ToastLength.Short).Show();
+                        }
                     };
 
             // Setting the chords database
