@@ -8,10 +8,11 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using Android.Graphics;
 
 namespace YouthSongbook
 {
-    [Activity(Label = "SongActivity", Icon = "@drawable/icon", Theme = "@android:style/Theme.Holo.Light")]
+    [Activity(Label = "SongActivity", Icon = "@drawable/icon", Theme = "@android:style/Theme.Holo.Light.DarkActionBar")]
     public class SongActivity : Activity
     {
         TextView songText;
@@ -20,7 +21,15 @@ namespace YouthSongbook
         {
             // Hook up the views
             base.OnCreate(bundle);
-            SetContentView(Resource.Layout.SongLayout);
+            if (SongData.GetContrast())
+            {
+                SetContentView(Resource.Layout.SongLayoutHC);
+            }
+            else
+            {
+                SetContentView(Resource.Layout.SongLayout);
+            }
+
             songText = FindViewById<TextView>(Resource.Id.songText);
 
             // Get the song title and chords from the intent and set the title

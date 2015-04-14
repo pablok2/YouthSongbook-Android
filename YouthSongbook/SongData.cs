@@ -41,6 +41,7 @@ namespace YouthSongbook
             createTablesList.Add("CREATE TABLE CHORDS (Id INTEGER PRIMARY KEY AUTOINCREMENT, Title ntext, Body ntext);");
             createTablesList.Add("CREATE TABLE UPDATENUM (Id INTEGER PRIMARY KEY AUTOINCREMENT, Number ntext);");
             createTablesList.Add("CREATE TABLE CHORDFLAG (Id INTEGER PRIMARY KEY AUTOINCREMENT, Flag ntext);");
+            createTablesList.Add("CREATE TABLE CONTRAST (Id INTEGER PRIMARY KEY AUTOINCREMENT, Flag ntext);");
 
             connection.Open();
 
@@ -56,6 +57,12 @@ namespace YouthSongbook
                 // Initialize chords database to be off
                 string initChordsSQL = "INSERT INTO CHORDFLAG (Flag) VALUES (@Flag);";
                 cmd.CommandText = initChordsSQL;
+                cmd.Parameters.AddWithValue("@Flag", "0");
+                cmd.ExecuteNonQuery();
+
+                // Initialize contrast database to be off
+                string initContrastSQL = "INSERT INTO CONTRAST (Flag) VALUES (@Flag);";
+                cmd.CommandText = initContrastSQL;
                 cmd.Parameters.AddWithValue("@Flag", "0");
                 cmd.ExecuteNonQuery();
             }
@@ -92,6 +99,35 @@ namespace YouthSongbook
             return chordsFlag.Equals("1");
         }
 
+        public static bool GetContrast()
+        {
+            string contrastFlag = "0";
+
+            // Create and open a database connection
+            using (SqliteConnection connection = GetConnection())
+            {
+                connection.Open();
+
+                using (SqliteCommand cmd = connection.CreateCommand())
+                {
+                    // Read the chords table
+                    string contrastSelect = "SELECT Flag FROM CONTRAST WHERE Id = 1;";
+                    cmd.CommandText = contrastSelect;
+
+                    using (SqliteDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            contrastFlag = reader.GetString(0);
+                        }
+                    }
+                }
+            }
+
+            // Return the contrast flag
+            return contrastFlag.Equals("1");
+        }
+
         public static void SetChords(bool chords)
         {
             using (SqliteConnection connection = GetConnection())
@@ -104,6 +140,25 @@ namespace YouthSongbook
                     string flag = chords ? "1" : "0";
                     string chordsSQL = "UPDATE CHORDFLAG SET Flag = \"" + flag + "\" WHERE Id = 1;";
                     cmd.CommandText = chordsSQL;
+                    cmd.ExecuteNonQuery();
+                }
+
+                connection.Close();
+            }
+        }
+
+        public static void SetContrast(bool contrast)
+        {
+            using (SqliteConnection connection = GetConnection())
+            {
+                connection.Open();
+
+                using (SqliteCommand cmd = connection.CreateCommand())
+                {
+                    // Initialize chords database to be off
+                    string flag = contrast ? "1" : "0";
+                    string contrastSQL = "UPDATE CONTRAST SET Flag = \"" + flag + "\" WHERE Id = 1;";
+                    cmd.CommandText = contrastSQL;
                     cmd.ExecuteNonQuery();
                 }
 

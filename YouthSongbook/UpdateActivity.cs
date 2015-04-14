@@ -11,23 +11,21 @@ using Android.Widget;
 
 namespace YouthSongbook
 {
-    [Activity(Label = "Settings", Icon = "@drawable/icon", Theme = "@android:style/Theme.Holo.Light")]
+    [Activity(Label = "Settings", Icon = "@drawable/icon", Theme = "@android:style/Theme.Holo.Light.DarkActionBar")]
     public class UpdateActivity : Activity
     {
-        Button updateButton;
-        CheckBox chordsCheckBox;
-
         protected override void OnCreate(Bundle bundle)
         {   
             // Hook up the view
             base.OnCreate(bundle);
             SetContentView(Resource.Layout.UpdateLayout);
-            updateButton = FindViewById<Button>(Resource.Id.updateButton);
-            chordsCheckBox = FindViewById<CheckBox>(Resource.Id.chordsCheckBox);
+            Button updateButton = FindViewById<Button>(Resource.Id.updateButton);
+            CheckBox chordsCheckBox = FindViewById<CheckBox>(Resource.Id.chordsCheckBox);
+            CheckBox contrastCheckBox = FindViewById<CheckBox>(Resource.Id.contrastCheckBox);
 
             // Set the chordsCheckBox if the current database is chords
-            bool chordsActive = SongData.GetChords();
-            chordsCheckBox.Checked = chordsActive;
+            chordsCheckBox.Checked = SongData.GetChords();
+            contrastCheckBox.Checked = SongData.GetContrast();
 
             // Async update button
             updateButton.Click += async (o, e) =>
@@ -55,6 +53,21 @@ namespace YouthSongbook
                 {
                     SongData.SetChords(false);
                     Toast.MakeText(this, "Disabled Chords", ToastLength.Short).Show();
+                }
+            };
+
+            // Setting the contrast database
+            contrastCheckBox.Click += (o, e) =>
+            {
+                if (chordsCheckBox.Checked)
+                {
+                    SongData.SetContrast(true);
+                    Toast.MakeText(this, "Enabled High Contrast", ToastLength.Short).Show();
+                }
+                else
+                {
+                    SongData.SetContrast(false);
+                    Toast.MakeText(this, "Disabled High Contrast", ToastLength.Short).Show();
                 }
             };
         }

@@ -84,6 +84,9 @@
     <AndroidAsset Include="Assets\songsChords.json" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
+    <AndroidResource Include="Resources\layout\SongLayoutHC.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml" />
@@ -95,14 +98,11 @@
     <AndroidResource Include="Resources\drawable\Icon.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Mono.Data.Sqlite.dll" />
     <Content Include="Newtonsoft.Json.dll" />
     <Content Include="Properties\AndroidManifest.xml" />
     <AndroidResource Include="Resources\layout\SongLayout.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\values\SongNames.xml" />
-    <AndroidResource Include="Resources\values\SongWords.xml" />
     <AndroidResource Include="Resources\layout\UpdateLayout.axml">
       <SubType>Designer</SubType>
     </AndroidResource>

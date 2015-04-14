@@ -8,15 +8,17 @@ using Android.OS;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.IO;
+using Android.Graphics;
 
 namespace YouthSongbook
 {
-    [Activity(Label = "New Youth Songbook", MainLauncher = true, Icon = "@drawable/icon", Theme = "@android:style/Theme.Holo.Light")]
+    [Activity(Label = "New Youth Songbook", MainLauncher = true, Icon = "@drawable/icon", Theme = "@android:style/Theme.Holo.Light.DarkActionBar")]
     public class MainActivity : Activity
     {
         ListView listView;
         string[] songNames;
         bool chordsEnabled;
+        bool highContrastEnabled;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -29,9 +31,15 @@ namespace YouthSongbook
             
             // Hook up the views
             base.OnCreate(bundle);
+            //highContrastEnabled = SongData.GetContrast();
+            //if (highContrastEnabled)
+            //{
+            //    listView.SetBackgroundColor(Color.Black);
+            //}
+
             SetContentView(Resource.Layout.Main);
             listView = FindViewById<ListView>(Resource.Id.list);
-            
+
             // Send song title to the song displaying class
             listView.ItemClick += (object sender, AdapterView.ItemClickEventArgs e) =>
             {
@@ -48,6 +56,7 @@ namespace YouthSongbook
 
             // Get the chords flag
             chordsEnabled = SongData.GetChords();
+            //highContrastEnabled = SongData.GetContrast();
 
             // Reload
             songNames = SongData.GetAllTitles(chordsEnabled);
