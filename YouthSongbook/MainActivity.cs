@@ -19,25 +19,32 @@ namespace YouthSongbook
         string[] songNames;
         bool chordsEnabled;
         bool highContrastEnabled;
+        Bundle thisBundle;
 
         protected override void OnCreate(Bundle bundle)
         {
+            // Hook up the views
+            base.OnCreate(bundle);
+            thisBundle = bundle;
+
             // Check for a living database and create if need be
             if(!SongData.DataBaseExists)
             {
                 SongData.LoadDatabase(Assets.Open("songs.json"), false);
                 SongData.LoadDatabase(Assets.Open("songsChords.json"), true);
             }
-            
-            // Hook up the views
-            base.OnCreate(bundle);
-            //highContrastEnabled = SongData.GetContrast();
-            //if (highContrastEnabled)
-            //{
-            //    listView.SetBackgroundColor(Color.Black);
-            //}
 
-            SetContentView(Resource.Layout.Main);
+            // Load contrast settings
+            highContrastEnabled = SongData.GetContrast();
+            if (highContrastEnabled)
+            {
+                SetContentView(Resource.Layout.MainHC);
+            }
+            else
+            {
+                SetContentView(Resource.Layout.Main);
+            }
+
             listView = FindViewById<ListView>(Resource.Id.list);
 
             // Send song title to the song displaying class
@@ -52,15 +59,28 @@ namespace YouthSongbook
 
         protected override void OnResume()
         {
+            // Reload all the initial stuff
+            // for HC layout changes
+            OnCreate(thisBundle);
+
             base.OnResume();
 
             // Get the chords flag
             chordsEnabled = SongData.GetChords();
-            //highContrastEnabled = SongData.GetContrast();
 
             // Reload
             songNames = SongData.GetAllTitles(chordsEnabled);
-            listView.Adapter = new ArrayAdapter<String>(this, Android.Resource.Layout.SimpleListItem1, songNames);
+
+            // Set list adapter type
+            if (highContrastEnabled)
+            {
+                listView.Adapter = new ArrayAdapter<String>(this, Resource.Layout.simple_list_item_CUST, songNames);
+            }
+            else
+            {
+                listView.Adapter = new ArrayAdapter<String>(this, Android.Resource.Layout.SimpleListItem1, songNames);
+            }
+            
         }
 
         // Menu item(s)

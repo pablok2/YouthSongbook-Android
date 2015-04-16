@@ -87,6 +87,10 @@
     <AndroidResource Include="Resources\layout\SongLayoutHC.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\layout\MainHC.axml" />
+    <AndroidResource Include="Resources\layout\UpdateLayoutHC.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml" />
@@ -106,6 +110,7 @@
     <AndroidResource Include="Resources\layout\UpdateLayout.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\layout\simple_list_item_CUST.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -18,7 +18,15 @@ namespace YouthSongbook
         {   
             // Hook up the view
             base.OnCreate(bundle);
-            SetContentView(Resource.Layout.UpdateLayout);
+            if (SongData.GetContrast())
+            {
+                SetContentView(Resource.Layout.UpdateLayoutHC);
+            }
+            else
+            {
+                SetContentView(Resource.Layout.UpdateLayout);
+            }
+
             Button updateButton = FindViewById<Button>(Resource.Id.updateButton);
             Switch chordSwitch = FindViewById<Switch>(Resource.Id.chordSwitch);
             Switch hcSwitch = FindViewById<Switch>(Resource.Id.hcSwitch);
