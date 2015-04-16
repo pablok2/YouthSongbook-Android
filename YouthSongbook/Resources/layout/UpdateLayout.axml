@@ -8,18 +8,26 @@
         p1:layout_width="match_parent"
         p1:layout_height="wrap_content"
         p1:id="@+id/updateButton" />
-    <CheckBox
-        p1:text="Show Chords"
-        p1:layout_width="match_parent"
+    <Switch
         p1:layout_height="wrap_content"
         p1:layout_below="@id/updateButton"
-        p1:id="@+id/chordsCheckBox"
-        p1:layout_marginTop="45px" />
-    <CheckBox
-        p1:text="High Contrast Mode"
+        p1:id="@+id/chordSwitch"
+        p1:layout_alignParentRight="true"
+        p1:text="Show Chords"
+        p1:paddingTop="20px"
+        p1:layout_marginLeft="50px"
+        p1:layout_marginTop="20px"
+        p1:layout_marginBottom="20px"
+        p1:layout_width="match_parent"
+        p1:layout_marginRight="50px" />
+    <Switch
         p1:layout_width="match_parent"
         p1:layout_height="wrap_content"
-        p1:id="@+id/contrastCheckBox"
+        p1:layout_below="@id/chordSwitch"
+        p1:id="@+id/hcSwitch"
+        p1:layout_marginBottom="20px"
+        p1:layout_marginLeft="50px"
+        p1:layout_marginRight="50px"
         p1:layout_marginTop="20px"
-        p1:layout_below="@id/chordsCheckBox" />
+        p1:text="High Contrast" />
 </RelativeLayout>

@@ -20,31 +20,30 @@ namespace YouthSongbook
             base.OnCreate(bundle);
             SetContentView(Resource.Layout.UpdateLayout);
             Button updateButton = FindViewById<Button>(Resource.Id.updateButton);
-            CheckBox chordsCheckBox = FindViewById<CheckBox>(Resource.Id.chordsCheckBox);
-            CheckBox contrastCheckBox = FindViewById<CheckBox>(Resource.Id.contrastCheckBox);
+            Switch chordSwitch = FindViewById<Switch>(Resource.Id.chordSwitch);
+            Switch hcSwitch = FindViewById<Switch>(Resource.Id.hcSwitch);
 
-            // Set the chordsCheckBox if the current database is chords
-            chordsCheckBox.Checked = SongData.GetChords();
-            contrastCheckBox.Checked = SongData.GetContrast();
+            chordSwitch.Checked = SongData.GetChords();
+            hcSwitch.Checked = SongData.GetContrast();
 
             // Async update button
             updateButton.Click += async (o, e) =>
-                    {
-                        try
-                        {
-                            await SongNetwork.PerformUpdateAsync();
-                            Toast.MakeText(this, "Finished Updating", ToastLength.Short).Show();
-                        }
-                        catch(Exception)
-                        {
-                            Toast.MakeText(this, "Unable to Update", ToastLength.Short).Show();
-                        }
-                    };
-
-            // Setting the chords database
-            chordsCheckBox.Click += (o, e) =>
             {
-                if (chordsCheckBox.Checked)
+                try
+                {
+                    await SongNetwork.PerformUpdateAsync();
+                    Toast.MakeText(this, "Finished Updating", ToastLength.Short).Show();
+                }
+                catch (Exception)
+                {
+                    Toast.MakeText(this, "Unable to Update", ToastLength.Short).Show();
+                }
+            };
+
+            // Chord switch
+            chordSwitch.CheckedChange += delegate(object sender, CompoundButton.CheckedChangeEventArgs e)
+            {
+                if (e.IsChecked)
                 {
                     SongData.SetChords(true);
                     Toast.MakeText(this, "Enabled Chords", ToastLength.Short).Show();
@@ -56,10 +55,10 @@ namespace YouthSongbook
                 }
             };
 
-            // Setting the contrast database
-            contrastCheckBox.Click += (o, e) =>
+            // High Contrast switch
+            hcSwitch.CheckedChange += delegate(object sender, CompoundButton.CheckedChangeEventArgs e)
             {
-                if (chordsCheckBox.Checked)
+                if (e.IsChecked)
                 {
                     SongData.SetContrast(true);
                     Toast.MakeText(this, "Enabled High Contrast", ToastLength.Short).Show();

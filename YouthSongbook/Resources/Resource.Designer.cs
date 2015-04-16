@@ -61,10 +61,10 @@ namespace YouthSongbook
 		{
 			
 			// aapt resource value: 0x7f050005
-			public const int chordsCheckBox = 2131034117;
+			public const int chordSwitch = 2131034117;
 			
 			// aapt resource value: 0x7f050006
-			public const int contrastCheckBox = 2131034118;
+			public const int hcSwitch = 2131034118;
 			
 			// aapt resource value: 0x7f050000
 			public const int list = 2131034112;
