@@ -1,21 +1,17 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+#region
+
 using Android.App;
-using Android.Content;
 using Android.OS;
-using Android.Runtime;
-using Android.Views;
 using Android.Widget;
-using Android.Graphics;
+
+#endregion
 
 namespace YouthSongbook
 {
     [Activity(Label = "SongActivity", Icon = "@drawable/icon", Theme = "@android:style/Theme.Holo.Light.DarkActionBar")]
     public class SongActivity : Activity
     {
-        TextView songText;
+        private TextView songText;
 
         protected override void OnCreate(Bundle bundle)
         {

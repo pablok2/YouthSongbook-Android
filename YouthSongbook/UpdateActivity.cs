@@ -1,13 +1,11 @@
+#region
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Android.App;
-using Android.Content;
 using Android.OS;
-using Android.Runtime;
-using Android.Views;
 using Android.Widget;
+
+#endregion
 
 namespace YouthSongbook
 {
@@ -15,7 +13,7 @@ namespace YouthSongbook
     public class UpdateActivity : Activity
     {
         protected override void OnCreate(Bundle bundle)
-        {   
+        {
             // Hook up the view
             base.OnCreate(bundle);
             if (SongData.GetContrast())

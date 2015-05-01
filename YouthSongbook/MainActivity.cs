@@ -1,25 +1,24 @@
-﻿using System;
+﻿#region
+
 using Android.App;
 using Android.Content;
-using Android.Runtime;
+using Android.OS;
 using Android.Views;
 using Android.Widget;
-using Android.OS;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.IO;
-using Android.Graphics;
+
+#endregion
 
 namespace YouthSongbook
 {
-    [Activity(Label = "New Youth Songbook", MainLauncher = true, Icon = "@drawable/icon", Theme = "@android:style/Theme.Holo.Light.DarkActionBar")]
+    [Activity(Label = "New Youth Songbook", MainLauncher = true, Icon = "@drawable/icon",
+        Theme = "@android:style/Theme.Holo.Light.DarkActionBar")]
     public class MainActivity : Activity
     {
-        ListView listView;
-        string[] songNames;
-        bool chordsEnabled;
-        bool highContrastEnabled;
-        Bundle thisBundle;
+        private bool chordsEnabled;
+        private bool highContrastEnabled;
+        private ListView listView;
+        private string[] songNames;
+        private Bundle thisBundle;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -28,7 +27,7 @@ namespace YouthSongbook
             thisBundle = bundle;
 
             // Check for a living database and create if need be
-            if(!SongData.DataBaseExists)
+            if (!SongData.DataBaseExists)
             {
                 SongData.LoadDatabase(Assets.Open("songs.json"), false);
                 SongData.LoadDatabase(Assets.Open("songsChords.json"), true);
@@ -50,10 +49,10 @@ namespace YouthSongbook
             // Send song title to the song displaying class
             listView.ItemClick += (object sender, AdapterView.ItemClickEventArgs e) =>
             {
-                Intent intent = new Intent(this, typeof(SongActivity));
+                Intent intent = new Intent(this, typeof (SongActivity));
                 intent.PutExtra("SONG_NAME", songNames[e.Position]);
                 intent.PutExtra("CHORDS", chordsEnabled);
-                this.StartActivity(intent);
+                StartActivity(intent);
             };
         }
 
@@ -74,13 +73,12 @@ namespace YouthSongbook
             // Set list adapter type
             if (highContrastEnabled)
             {
-                listView.Adapter = new ArrayAdapter<String>(this, Resource.Layout.simple_list_item_CUST, songNames);
+                listView.Adapter = new ArrayAdapter<string>(this, Resource.Layout.simple_list_item_CUST, songNames);
             }
             else
             {
-                listView.Adapter = new ArrayAdapter<String>(this, Android.Resource.Layout.SimpleListItem1, songNames);
+                listView.Adapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleListItem1, songNames);
             }
-            
         }
 
         // Menu item(s)
@@ -96,15 +94,14 @@ namespace YouthSongbook
             switch (item.ItemId)
             {
                 case 0:
-                    {
-                        // Send clean intent to the update class
-                        this.StartActivity(new Intent(this, typeof(UpdateActivity)));
-                        return true;
-                    }
+                {
+                    // Send clean intent to the update class
+                    StartActivity(new Intent(this, typeof (UpdateActivity)));
+                    return true;
+                }
                 default:
                     return base.OnOptionsItemSelected(item);
             }
         }
     }
 }
-

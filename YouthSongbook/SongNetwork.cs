@@ -1,11 +1,12 @@
-using System;
+#region
+
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
-using System.Threading.Tasks;
 using System.Net;
+using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
+
+#endregion
 
 namespace YouthSongbook
 {
@@ -15,10 +16,10 @@ namespace YouthSongbook
         {
             //// Create an HTTP web request using the URL:
             var request = WebRequest.Create(url);
-            var response = (HttpWebResponse)await Task.Factory
+            var response = (HttpWebResponse) await Task.Factory
                 .FromAsync<WebResponse>(request.BeginGetResponse,
-                                        request.EndGetResponse,
-                                        null);
+                    request.EndGetResponse,
+                    null);
 
             // Get a stream representation of the HTTP web response:
             using (Stream stream = response.GetResponseStream())

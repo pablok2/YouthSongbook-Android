@@ -1,18 +1,26 @@
+#region
+
 using System;
 using System.Collections.Generic;
-using Mono.Data.Sqlite;
-using System.Threading.Tasks;
 using System.IO;
+using Mono.Data.Sqlite;
 using Newtonsoft.Json.Linq;
+
+#endregion
 
 namespace YouthSongbook
 {
     public static class SongData
     {
-        private static string db_file = "notes.db3";
-        private static string dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), db_file);
+        private static readonly string db_file = "notes.db3";
 
-        public static bool DataBaseExists { get { return File.Exists(dbPath); } }
+        private static readonly string dbPath =
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), db_file);
+
+        public static bool DataBaseExists
+        {
+            get { return File.Exists(dbPath); }
+        }
 
         private static SqliteConnection GetConnection()
         {
@@ -194,7 +202,7 @@ namespace YouthSongbook
         }
 
         public static string GetSong(string title, bool chords)
-        {   
+        {
             string song = string.Empty;
 
             using (SqliteConnection conn = GetConnection())
@@ -205,7 +213,7 @@ namespace YouthSongbook
                 {
                     string table = chords ? "CHORDS" : "ITEMS";
                     string sql = "SELECT Body FROM " + table + " WHERE Title = \""
-                        + title + "\";";
+                                 + title + "\";";
                     cmd.CommandText = sql;
 
                     using (var reader = cmd.ExecuteReader())
@@ -222,8 +230,8 @@ namespace YouthSongbook
 
             return song;
         }
-        
-        public static void UpdateSongs(string updateNumber, Dictionary<string,string> dict, bool chords)
+
+        public static void UpdateSongs(string updateNumber, Dictionary<string, string> dict, bool chords)
         {
             // Create and open a database connection
             using (SqliteConnection connection = GetConnection())
@@ -263,7 +271,7 @@ namespace YouthSongbook
 
             // Create and open a database connection
             using (SqliteConnection connection = GetConnection())
-            { 
+            {
                 connection.Open();
 
                 int updateNumber = 0;
@@ -287,8 +295,8 @@ namespace YouthSongbook
                     if (updateNumber < number)
                     {
                         string sqlInitUpdate = "UPDATE UPDATENUM SET Number = \"" +
-                            (updateNumber + 1).ToString() +
-                            "\" WHERE Id = 1;";
+                                               (updateNumber + 1) +
+                                               "\" WHERE Id = 1;";
                         cmd.CommandText = sqlInitUpdate;
                         cmd.ExecuteNonQuery();
 
