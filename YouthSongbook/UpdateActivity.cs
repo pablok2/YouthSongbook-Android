@@ -25,7 +25,7 @@ namespace YouthSongbook
                 SetContentView(Resource.Layout.UpdateLayout);
             }
 
-            Button updateButton = FindViewById<Button>(Resource.Id.updateButton);
+            Switch updateButton = FindViewById<Switch>(Resource.Id.autoUpdateSwitch);
             Switch chordSwitch = FindViewById<Switch>(Resource.Id.chordSwitch);
             Switch hcSwitch = FindViewById<Switch>(Resource.Id.hcSwitch);
 
@@ -33,7 +33,7 @@ namespace YouthSongbook
             hcSwitch.Checked = SongData.GetContrast();
 
             // Async update button
-            updateButton.Click += async (o, e) =>
+            updateButton.CheckedChange += async (object sender, CompoundButton.CheckedChangeEventArgs e) =>
             {
                 try
                 {

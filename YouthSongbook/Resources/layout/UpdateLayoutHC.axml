@@ -4,15 +4,8 @@
     p1:layout_height="match_parent"
     p1:id="@+id/relativeLayout1"
     p1:background="@android:color/background_dark">
-    <Button
-        p1:text="Update"
-        p1:layout_width="match_parent"
-        p1:layout_height="wrap_content"
-        p1:id="@+id/updateButton"
-        p1:textColor="@android:color/background_light" />
     <Switch
         p1:layout_height="wrap_content"
-        p1:layout_below="@id/updateButton"
         p1:id="@+id/chordSwitch"
         p1:layout_alignParentRight="true"
         p1:text="Show Chords"
@@ -33,5 +26,16 @@
         p1:layout_marginRight="50px"
         p1:layout_marginTop="20px"
         p1:text="High Contrast"
+        p1:textColor="@android:color/background_light" />
+    <Switch
+        p1:layout_width="match_parent"
+        p1:layout_height="wrap_content"
+        p1:layout_below="@id/hcSwitch"
+        p1:id="@+id/autoUpdateSwitch"
+        p1:text="Auto Update"
+        p1:layout_marginBottom="20px"
+        p1:layout_marginLeft="50px"
+        p1:layout_marginRight="50px"
+        p1:layout_marginTop="20px"
         p1:textColor="@android:color/background_light" />
 </RelativeLayout>

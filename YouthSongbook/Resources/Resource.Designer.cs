@@ -60,11 +60,14 @@ namespace YouthSongbook
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f050005
-			public const int chordSwitch = 2131034117;
-			
 			// aapt resource value: 0x7f050006
-			public const int hcSwitch = 2131034118;
+			public const int autoUpdateSwitch = 2131034118;
+			
+			// aapt resource value: 0x7f050004
+			public const int chordSwitch = 2131034116;
+			
+			// aapt resource value: 0x7f050005
+			public const int hcSwitch = 2131034117;
 			
 			// aapt resource value: 0x7f050000
 			public const int list = 2131034112;
@@ -77,9 +80,6 @@ namespace YouthSongbook
 			
 			// aapt resource value: 0x7f050002
 			public const int songText = 2131034114;
-			
-			// aapt resource value: 0x7f050004
-			public const int updateButton = 2131034116;
 			
 			static Id()
 			{
