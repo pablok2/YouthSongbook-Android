@@ -25,24 +25,38 @@ namespace YouthSongbook
                 SetContentView(Resource.Layout.UpdateLayout);
             }
 
-            Switch updateButton = FindViewById<Switch>(Resource.Id.autoUpdateSwitch);
+            Switch updateSwitch = FindViewById<Switch>(Resource.Id.autoUpdateSwitch);
             Switch chordSwitch = FindViewById<Switch>(Resource.Id.chordSwitch);
             Switch hcSwitch = FindViewById<Switch>(Resource.Id.hcSwitch);
 
             chordSwitch.Checked = SongData.GetChords();
             hcSwitch.Checked = SongData.GetContrast();
+            updateSwitch.Checked = SongData.GetUpdateFlag();
 
-            // Async update button
-            updateButton.CheckedChange += async (object sender, CompoundButton.CheckedChangeEventArgs e) =>
+            //// Async update button
+            //updateButton.CheckedChange += async (object sender, CompoundButton.CheckedChangeEventArgs e) =>
+            //{
+            //    try
+            //    {
+            //        await SongNetwork.PerformUpdateAsync();
+            //        Toast.MakeText(this, "Finished Updating", ToastLength.Short).Show();
+            //    }
+            //    catch (Exception)
+            //    {
+            //        Toast.MakeText(this, "Unable to Update", ToastLength.Short).Show();
+            //    }
+            //};
+
+            // Auto Update Switch
+            updateSwitch.CheckedChange += delegate(object sender, CompoundButton.CheckedChangeEventArgs e)
             {
-                try
+                if (e.IsChecked)
                 {
-                    await SongNetwork.PerformUpdateAsync();
-                    Toast.MakeText(this, "Finished Updating", ToastLength.Short).Show();
+                    SongData.SetUpdateFlag(true);
                 }
-                catch (Exception)
+                else
                 {
-                    Toast.MakeText(this, "Unable to Update", ToastLength.Short).Show();
+                    SongData.SetUpdateFlag(false);
                 }
             };
 
@@ -52,12 +66,10 @@ namespace YouthSongbook
                 if (e.IsChecked)
                 {
                     SongData.SetChords(true);
-                    Toast.MakeText(this, "Enabled Chords", ToastLength.Short).Show();
                 }
                 else
                 {
-                    SongData.SetChords(false);
-                    Toast.MakeText(this, "Disabled Chords", ToastLength.Short).Show();
+                    SongData.SetChords(false);;
                 }
             };
 
@@ -67,12 +79,10 @@ namespace YouthSongbook
                 if (e.IsChecked)
                 {
                     SongData.SetContrast(true);
-                    Toast.MakeText(this, "Enabled High Contrast", ToastLength.Short).Show();
                 }
                 else
                 {
                     SongData.SetContrast(false);
-                    Toast.MakeText(this, "Disabled High Contrast", ToastLength.Short).Show();
                 }
             };
         }

@@ -1,5 +1,7 @@
 ﻿#region
 
+using System;
+using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.OS;
@@ -43,7 +45,7 @@ namespace YouthSongbook
             {
                 SetContentView(Resource.Layout.Main);
             }
-
+            
             listView = FindViewById<ListView>(Resource.Id.list);
 
             // Send song title to the song displaying class
@@ -69,6 +71,12 @@ namespace YouthSongbook
 
             // Reload
             songNames = SongData.GetAllTitles(chordsEnabled);
+            
+            // Check for updates
+            if (SongData.GetUpdateFlag())
+            {
+                UpdateAsync();
+            }
 
             // Set list adapter type
             if (highContrastEnabled)
@@ -101,6 +109,19 @@ namespace YouthSongbook
                 }
                 default:
                     return base.OnOptionsItemSelected(item);
+            }
+        }
+
+        // Async update method
+        private async Task UpdateAsync()
+        {
+            try
+            {
+                await SongNetwork.PerformUpdateAsync();
+            }
+            catch (Exception)
+            {
+                // ignore attempt
             }
         }
     }
