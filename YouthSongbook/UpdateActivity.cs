@@ -1,6 +1,5 @@
 #region
 
-using System;
 using Android.App;
 using Android.OS;
 using Android.Widget;
@@ -33,57 +32,22 @@ namespace YouthSongbook
             hcSwitch.Checked = SongData.GetContrast();
             updateSwitch.Checked = SongData.GetUpdateFlag();
 
-            //// Async update button
-            //updateButton.CheckedChange += async (object sender, CompoundButton.CheckedChangeEventArgs e) =>
-            //{
-            //    try
-            //    {
-            //        await SongNetwork.PerformUpdateAsync();
-            //        Toast.MakeText(this, "Finished Updating", ToastLength.Short).Show();
-            //    }
-            //    catch (Exception)
-            //    {
-            //        Toast.MakeText(this, "Unable to Update", ToastLength.Short).Show();
-            //    }
-            //};
-
             // Auto Update Switch
             updateSwitch.CheckedChange += delegate(object sender, CompoundButton.CheckedChangeEventArgs e)
             {
-                if (e.IsChecked)
-                {
-                    SongData.SetUpdateFlag(true);
-                }
-                else
-                {
-                    SongData.SetUpdateFlag(false);
-                }
+                SongData.SetUpdateFlag(e.IsChecked);
             };
 
             // Chord switch
             chordSwitch.CheckedChange += delegate(object sender, CompoundButton.CheckedChangeEventArgs e)
             {
-                if (e.IsChecked)
-                {
-                    SongData.SetChords(true);
-                }
-                else
-                {
-                    SongData.SetChords(false);;
-                }
+                SongData.SetChords(e.IsChecked);
             };
 
             // High Contrast switch
             hcSwitch.CheckedChange += delegate(object sender, CompoundButton.CheckedChangeEventArgs e)
             {
-                if (e.IsChecked)
-                {
-                    SongData.SetContrast(true);
-                }
-                else
-                {
-                    SongData.SetContrast(false);
-                }
+                SongData.SetContrast(e.IsChecked);
             };
         }
     }
