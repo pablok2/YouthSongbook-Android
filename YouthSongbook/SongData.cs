@@ -10,14 +10,14 @@ using Newtonsoft.Json.Linq;
 
 namespace YouthSongbook
 {
-    public enum Setting
+    internal enum Setting
     {
         Chords,
         Contrast,
         UpdateFlag
     }
 
-    public static class SongData
+    internal static class SongData
     {
         private static readonly string db_file = "notes.db3";
 
@@ -137,7 +137,7 @@ namespace YouthSongbook
 
         internal static void SetSetting(Setting setting, bool flag)
         {
-            string table;
+            string table = string.Empty;
 
             switch (setting)
             {
@@ -160,7 +160,7 @@ namespace YouthSongbook
                 {
                     // Initialize chords database to be off
                     string value = flag ? "1" : "0";
-                    string chordsSQL = "UPDATE CHORDFLAG SET Flag = \"" + value + "\" WHERE Id = 1;";
+                    string chordsSQL = "UPDATE " + table + " SET Flag = \"" + value + "\" WHERE Id = 1;";
                     cmd.CommandText = chordsSQL;
                     cmd.ExecuteNonQuery();
                 }

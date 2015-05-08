@@ -47,6 +47,8 @@ namespace YouthSongbook
             }
             
             listView = FindViewById<ListView>(Resource.Id.list);
+            listView.FastScrollEnabled = true;
+            listView.ScrollBarStyle = ScrollbarStyles.OutsideInset;
 
             // Send song title to the song displaying class
             listView.ItemClick += (object sender, AdapterView.ItemClickEventArgs e) =>

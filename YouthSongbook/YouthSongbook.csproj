@@ -76,6 +76,7 @@
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SongActivity.cs" />
+    <Compile Include="SongListAdapter.cs" />
     <Compile Include="SongNetwork.cs" />
     <Compile Include="UpdateActivity.cs" />
   </ItemGroup>
