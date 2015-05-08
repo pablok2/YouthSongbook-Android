@@ -36,7 +36,7 @@ namespace YouthSongbook
             }
 
             // Load contrast settings
-            highContrastEnabled = SongData.GetContrast();
+            highContrastEnabled = SongData.GetSetting(Setting.Contrast);
             if (highContrastEnabled)
             {
                 SetContentView(Resource.Layout.MainHC);
@@ -67,13 +67,13 @@ namespace YouthSongbook
             base.OnResume();
 
             // Get the chords flag
-            chordsEnabled = SongData.GetChords();
+            chordsEnabled = SongData.GetSetting(Setting.Chords);
 
             // Reload
             songNames = SongData.GetAllTitles(chordsEnabled);
             
             // Check for updates
-            if (SongData.GetUpdateFlag())
+            if (SongData.GetSetting(Setting.UpdateFlag))
             {
                 UpdateAsync();
             }

@@ -15,7 +15,7 @@ namespace YouthSongbook
         {
             // Hook up the view
             base.OnCreate(bundle);
-            if (SongData.GetContrast())
+            if (SongData.GetSetting(Setting.Contrast))
             {
                 SetContentView(Resource.Layout.UpdateLayoutHC);
             }
@@ -28,26 +28,26 @@ namespace YouthSongbook
             Switch chordSwitch = FindViewById<Switch>(Resource.Id.chordSwitch);
             Switch hcSwitch = FindViewById<Switch>(Resource.Id.hcSwitch);
 
-            chordSwitch.Checked = SongData.GetChords();
-            hcSwitch.Checked = SongData.GetContrast();
-            updateSwitch.Checked = SongData.GetUpdateFlag();
+            chordSwitch.Checked = SongData.GetSetting(Setting.Chords);
+            hcSwitch.Checked = SongData.GetSetting(Setting.Contrast);
+            updateSwitch.Checked = SongData.GetSetting(Setting.UpdateFlag);
 
             // Auto Update Switch
             updateSwitch.CheckedChange += delegate(object sender, CompoundButton.CheckedChangeEventArgs e)
             {
-                SongData.SetUpdateFlag(e.IsChecked);
+                SongData.SetSetting(Setting.UpdateFlag, e.IsChecked);
             };
 
             // Chord switch
             chordSwitch.CheckedChange += delegate(object sender, CompoundButton.CheckedChangeEventArgs e)
             {
-                SongData.SetChords(e.IsChecked);
+                SongData.SetSetting(Setting.Chords, e.IsChecked);
             };
 
             // High Contrast switch
             hcSwitch.CheckedChange += delegate(object sender, CompoundButton.CheckedChangeEventArgs e)
             {
-                SongData.SetContrast(e.IsChecked);
+                SongData.SetSetting(Setting.Contrast, e.IsChecked);
             };
         }
     }

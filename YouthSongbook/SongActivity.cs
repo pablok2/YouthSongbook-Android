@@ -17,7 +17,7 @@ namespace YouthSongbook
         {
             // Hook up the views
             base.OnCreate(bundle);
-            if (SongData.GetContrast())
+            if (SongData.GetSetting(Setting.Contrast))
             {
                 SetContentView(Resource.Layout.SongLayoutHC);
             }

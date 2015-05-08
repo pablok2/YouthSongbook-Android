@@ -10,7 +10,7 @@ using Newtonsoft.Json.Linq;
 
 namespace YouthSongbook
 {
-    public static class SongNetwork
+    internal static class SongNetwork
     {
         private static async Task<JObject> FetchDataAsync(string url)
         {
@@ -31,7 +31,7 @@ namespace YouthSongbook
             }
         }
 
-        public static async Task<int> PerformUpdateAsync()
+        internal static async Task<int> PerformUpdateAsync()
         {
             // The URL strings to get json objects from
             string baseURL = "http://frbcme.org/test/";
@@ -63,7 +63,7 @@ namespace YouthSongbook
             return 0;
         }
 
-        public static Dictionary<string, string> JsonToDictionary(JObject json)
+        internal static Dictionary<string, string> JsonToDictionary(JObject json)
         {
             Dictionary<string, string> updateDict = new Dictionary<string, string>();
 

@@ -10,6 +10,13 @@ using Newtonsoft.Json.Linq;
 
 namespace YouthSongbook
 {
+    public enum Setting
+    {
+        Chords,
+        Contrast,
+        UpdateFlag
+    }
+
     public static class SongData
     {
         private static readonly string db_file = "notes.db3";
@@ -17,7 +24,7 @@ namespace YouthSongbook
         private static readonly string dbPath =
             Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), db_file);
 
-        public static bool DataBaseExists
+        internal static bool DataBaseExists
         {
             get { return File.Exists(dbPath); }
         }
@@ -84,9 +91,25 @@ namespace YouthSongbook
             connection.Close();
         }
 
-        public static bool GetChords()
+        internal static bool GetSetting(Setting setting)
         {
-            string chordsFlag = "0";
+            string table;
+            string flag = "0";
+
+            switch (setting)
+            {
+                case Setting.Chords:
+                    table = "CHORDFLAG";
+                    break;
+                case Setting.Contrast:
+                    table = "CONTRAST";
+                    break;
+                case Setting.UpdateFlag:
+                    table = "UPDATEFLAG";
+                    break;
+                default:
+                    return false;
+            }
 
             // Create and open a database connection
             using (SqliteConnection connection = GetConnection())
@@ -96,83 +119,39 @@ namespace YouthSongbook
                 using (SqliteCommand cmd = connection.CreateCommand())
                 {
                     // Read the chords table
-                    string chordsSelect = "SELECT Flag FROM CHORDFLAG WHERE Id = 1;";
-                    cmd.CommandText = chordsSelect;
+                    cmd.CommandText = "SELECT Flag FROM " + table + " WHERE Id = 1;";
 
                     using (SqliteDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
                         {
-                            chordsFlag = reader.GetString(0);
+                            flag = reader.GetString(0);
                         }
                     }
                 }
             }
 
             // Return the chords flag
-            return chordsFlag.Equals("1");
+            return flag.Equals("1");
         }
 
-        public static bool GetContrast()
+        internal static void SetSetting(Setting setting, bool flag)
         {
-            string contrastFlag = "0";
+            string table;
 
-            // Create and open a database connection
-            using (SqliteConnection connection = GetConnection())
+            switch (setting)
             {
-                connection.Open();
-
-                using (SqliteCommand cmd = connection.CreateCommand())
-                {
-                    // Read the chords table
-                    string contrastSelect = "SELECT Flag FROM CONTRAST WHERE Id = 1;";
-                    cmd.CommandText = contrastSelect;
-
-                    using (SqliteDataReader reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            contrastFlag = reader.GetString(0);
-                        }
-                    }
-                }
+                case Setting.Chords:
+                    table = "CHORDFLAG";
+                    break;
+                case Setting.Contrast:
+                    table = "CONTRAST";
+                    break;
+                case Setting.UpdateFlag:
+                    table = "UPDATEFLAG";
+                    break;
             }
 
-            // Return the contrast flag
-            return contrastFlag.Equals("1");
-        }
-
-        public static bool GetUpdateFlag()
-        {
-            string updateFlag = "0";
-
-            // Create and open a database connection
-            using (SqliteConnection connection = GetConnection())
-            {
-                connection.Open();
-
-                using (SqliteCommand cmd = connection.CreateCommand())
-                {
-                    // Read the chords table
-                    string updateFlagSelect = "SELECT Flag FROM UPDATEFLAG WHERE Id = 1;";
-                    cmd.CommandText = updateFlagSelect;
-
-                    using (SqliteDataReader reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            updateFlag = reader.GetString(0);
-                        }
-                    }
-                }
-            }
-
-            // Return the chords flag
-            return updateFlag.Equals("1");
-        }
-
-        public static void SetChords(bool chords)
-        {
             using (SqliteConnection connection = GetConnection())
             {
                 connection.Open();
@@ -180,8 +159,8 @@ namespace YouthSongbook
                 using (SqliteCommand cmd = connection.CreateCommand())
                 {
                     // Initialize chords database to be off
-                    string flag = chords ? "1" : "0";
-                    string chordsSQL = "UPDATE CHORDFLAG SET Flag = \"" + flag + "\" WHERE Id = 1;";
+                    string value = flag ? "1" : "0";
+                    string chordsSQL = "UPDATE CHORDFLAG SET Flag = \"" + value + "\" WHERE Id = 1;";
                     cmd.CommandText = chordsSQL;
                     cmd.ExecuteNonQuery();
                 }
@@ -190,45 +169,7 @@ namespace YouthSongbook
             }
         }
 
-        public static void SetContrast(bool contrast)
-        {
-            using (SqliteConnection connection = GetConnection())
-            {
-                connection.Open();
-
-                using (SqliteCommand cmd = connection.CreateCommand())
-                {
-                    // Initialize chords database to be off
-                    string flag = contrast ? "1" : "0";
-                    string contrastSQL = "UPDATE CONTRAST SET Flag = \"" + flag + "\" WHERE Id = 1;";
-                    cmd.CommandText = contrastSQL;
-                    cmd.ExecuteNonQuery();
-                }
-
-                connection.Close();
-            }
-        }
-
-        public static void SetUpdateFlag(bool updateFlag)
-        {
-            using (SqliteConnection connection = GetConnection())
-            {
-                connection.Open();
-
-                using (SqliteCommand cmd = connection.CreateCommand())
-                {
-                    // Initialize chords database to be off
-                    string flag = updateFlag ? "1" : "0";
-                    string updateFlagSQL = "UPDATE UPDATEFLAG SET Flag = \"" + flag + "\" WHERE Id = 1;";
-                    cmd.CommandText = updateFlagSQL;
-                    cmd.ExecuteNonQuery();
-                }
-
-                connection.Close();
-            }
-        }
-
-        public static string[] GetAllTitles(bool chords)
+        internal static string[] GetAllTitles(bool chords)
         {
             List<string> titles = new List<string>();
 
@@ -255,7 +196,7 @@ namespace YouthSongbook
             return titles.ToArray();
         }
 
-        public static string GetSong(string title, bool chords)
+        internal static string GetSong(string title, bool chords)
         {
             string song = string.Empty;
 
@@ -285,7 +226,7 @@ namespace YouthSongbook
             return song;
         }
 
-        public static void UpdateSongs(string updateNumber, Dictionary<string, string> dict, bool chords)
+        internal static void UpdateSongs(string updateNumber, Dictionary<string, string> dict, bool chords)
         {
             // Create and open a database connection
             using (SqliteConnection connection = GetConnection())
@@ -319,7 +260,7 @@ namespace YouthSongbook
             }
         }
 
-        public static bool CheckUpdate(int number)
+        internal static bool CheckUpdate(int number)
         {
             bool update = false;
 
@@ -356,10 +297,6 @@ namespace YouthSongbook
 
                         update = true;
                     }
-                    else
-                    {
-                        update = false;
-                    }
                 }
 
                 connection.Close();
@@ -368,7 +305,7 @@ namespace YouthSongbook
             return update;
         }
 
-        public static void LoadDatabase(Stream asset, bool chords)
+        internal static void LoadDatabase(Stream asset, bool chords)
         {
             // Get the initial asset Json file
             string content;
