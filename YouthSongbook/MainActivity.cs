@@ -80,15 +80,17 @@ namespace YouthSongbook
                 UpdateAsync();
             }
 
-            // Set list adapter type
-            if (highContrastEnabled)
-            {
-                listView.Adapter = new ArrayAdapter<string>(this, Resource.Layout.simple_list_item_CUST, songNames);
-            }
-            else
-            {
-                listView.Adapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleListItem1, songNames);
-            }
+            //// Set list adapter type
+            //if (highContrastEnabled)
+            //{
+            //    listView.Adapter = new ArrayAdapter<string>(this, Resource.Layout.simple_list_item_CUST, songNames);
+            //}
+            //else
+            //{
+            //    listView.Adapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleListItem1, songNames);
+            //}
+
+            listView.Adapter = new SongListAdapter(this, songNames, highContrastEnabled);
         }
 
         // Menu item(s)

@@ -18,24 +18,30 @@ namespace YouthSongbook
     {
         private Activity context;
         private string[] items;
+        private Dictionary<string, int> alphaIndex;
+        private string[] sections;
+        private Java.Lang.Object[] sectionsObjects;
+        private bool highContrastFlag;
 
-        public SongListAdapter(Activity context, string[] items)
+        public SongListAdapter(Activity context, string[] items, bool highContrast)
         {
             this.context = context;
             this.items = items;
+            highContrastFlag = highContrast;
 
-            var alphaIndex = new Dictionary<string, int>();
+            alphaIndex = new Dictionary<string, int>();
             for (int i = 0; i < items.Length; i++)
             {
                 var key = items[i][0].ToString();
                 if (!alphaIndex.ContainsKey(key))
                     alphaIndex.Add(key, i);
             }
-            var sections = new string[alphaIndex.Keys.Count];
+
+            sections = new string[alphaIndex.Keys.Count];
             alphaIndex.Keys.CopyTo(sections, 0); // convert letters list to string[]
 
             // Interface requires a Java.Lang.Object[], so we create one here
-            var sectionsObjects = new Java.Lang.Object[sections.Length];
+            sectionsObjects = new Java.Lang.Object[sections.Length];
             for (int i = 0; i < sections.Length; i++)
             {
                 sectionsObjects[i] = new Java.Lang.String(sections[i]);
@@ -61,27 +67,44 @@ namespace YouthSongbook
         {
             View view = convertView; // re-use an existing view, if one is available
             if (view == null) // otherwise create a new one
-                view = context.LayoutInflater.Inflate(Android.Resource.Layout.SimpleListItem1, null);
+            {
+                if (highContrastFlag)
+                {
+                    view = context.LayoutInflater.Inflate(Resource.Layout.simple_list_item_CUST, null);
+                }
+                else
+                {
+                    view = context.LayoutInflater.Inflate(Android.Resource.Layout.SimpleListItem1, null);
+                }
+            }
+
             view.FindViewById<TextView>(Android.Resource.Id.Text1).Text = items[position];
             return view;
         }
 
-        // TODO:
         public int GetPositionForSection(int section)
         {
-            throw new NotImplementedException();
+            return alphaIndex[sections[section]];
         }
 
-        // TODO:
         public int GetSectionForPosition(int position)
         {
-            throw new NotImplementedException();
+            int prevSection = 0;
+            for (int i = 0; i < sections.Length; i++)
+            {
+                if (GetPositionForSection(i) > position)
+                {
+                    break;
+                }
+                prevSection = i;
+            }
+
+            return prevSection;
         }
 
-        // TODO:
         Object[] ISectionIndexer.GetSections()
         {
-            throw new NotImplementedException();
+            return sectionsObjects;
         }
     }
 }
