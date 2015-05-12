@@ -7,12 +7,13 @@ using Android.Content;
 using Android.OS;
 using Android.Views;
 using Android.Widget;
+using HIHSongbook;
 
 #endregion
 
 namespace YouthSongbook
 {
-    [Activity(Label = "New Youth Songbook", MainLauncher = true, Icon = "@drawable/icon",
+    [Activity(Label = "Hand in Hand Songbook", Icon = "@drawable/icon",
         Theme = "@android:style/Theme.Holo.Light.DarkActionBar")]
     public class MainActivity : Activity
     {
@@ -45,7 +46,7 @@ namespace YouthSongbook
             {
                 SetContentView(Resource.Layout.Main);
             }
-            
+
             listView = FindViewById<ListView>(Resource.Id.list);
             listView.FastScrollEnabled = true;
             listView.ScrollBarStyle = ScrollbarStyles.OutsideInset;
@@ -73,22 +74,12 @@ namespace YouthSongbook
 
             // Reload
             songNames = SongData.GetAllTitles(chordsEnabled);
-            
+
             // Check for updates
             if (SongData.GetSetting(Setting.UpdateFlag))
             {
                 UpdateAsync();
             }
-
-            //// Set list adapter type
-            //if (highContrastEnabled)
-            //{
-            //    listView.Adapter = new ArrayAdapter<string>(this, Resource.Layout.simple_list_item_CUST, songNames);
-            //}
-            //else
-            //{
-            //    listView.Adapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleListItem1, songNames);
-            //}
 
             listView.Adapter = new SongListAdapter(this, songNames, highContrastEnabled);
         }
