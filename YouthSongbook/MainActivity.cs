@@ -70,7 +70,6 @@ namespace YouthSongbook
             OnCreate(thisBundle);
 
             base.OnResume();
-
             // Get the chords flag
             chordsEnabled = SongData.GetSetting(Setting.Chords);
 

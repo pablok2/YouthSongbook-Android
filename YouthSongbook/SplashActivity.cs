@@ -1,5 +1,6 @@
 #region
 
+using System.Threading;
 using Android;
 using Android.App;
 using Android.OS;
@@ -15,8 +16,10 @@ namespace YouthSongbook
         {
             base.OnCreate(bundle);
             StartActivity(typeof (MainActivity));
-            Finish();
+            Thread.Sleep(500);
             OverridePendingTransition(Resource.Animation.FadeIn, Resource.Animation.FadeOut);
+
+            Finish();
         }
     }
 }
