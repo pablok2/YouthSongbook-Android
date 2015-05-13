@@ -28,14 +28,14 @@ namespace YouthSongbook
             // Hook up the views
             base.OnCreate(bundle);
             thisBundle = bundle;
-            
+
             // Check for a living database and create if need be
             if (!SongData.DataBaseExists)
             {
                 SongData.LoadDatabase(Assets.Open("songs.json"), false);
                 SongData.LoadDatabase(Assets.Open("songsChords.json"), true);
             }
-            
+
 
             // Load contrast settings
             highContrastEnabled = SongData.GetSetting(Setting.Contrast);
@@ -55,7 +55,7 @@ namespace YouthSongbook
             // Send song title to the song displaying class
             listView.ItemClick += (object sender, AdapterView.ItemClickEventArgs e) =>
             {
-                Intent intent = new Intent(this, typeof(SongActivity));
+                Intent intent = new Intent(this, typeof (SongActivity));
                 intent.PutExtra("SONG_NAME", songNames[e.Position]);
                 intent.PutExtra("CHORDS", chordsEnabled);
                 StartActivity(intent);
