@@ -28,13 +28,14 @@ namespace YouthSongbook
             // Hook up the views
             base.OnCreate(bundle);
             thisBundle = bundle;
-
+            
             // Check for a living database and create if need be
             if (!SongData.DataBaseExists)
             {
                 SongData.LoadDatabase(Assets.Open("songs.json"), false);
                 SongData.LoadDatabase(Assets.Open("songsChords.json"), true);
             }
+            
 
             // Load contrast settings
             highContrastEnabled = SongData.GetSetting(Setting.Contrast);
@@ -54,10 +55,11 @@ namespace YouthSongbook
             // Send song title to the song displaying class
             listView.ItemClick += (object sender, AdapterView.ItemClickEventArgs e) =>
             {
-                Intent intent = new Intent(this, typeof (SongActivity));
+                Intent intent = new Intent(this, typeof(SongActivity));
                 intent.PutExtra("SONG_NAME", songNames[e.Position]);
                 intent.PutExtra("CHORDS", chordsEnabled);
                 StartActivity(intent);
+                OverridePendingTransition(Android.Resource.Animation.FadeIn, Android.Resource.Animation.FadeOut);
             };
         }
 
@@ -99,7 +101,8 @@ namespace YouthSongbook
                 case 0:
                 {
                     // Send clean intent to the update class
-                    StartActivity(new Intent(this, typeof (UpdateActivity)));
+                    StartActivity(typeof (UpdateActivity));
+                    OverridePendingTransition(Android.Resource.Animation.FadeIn, Android.Resource.Animation.FadeOut);
                     return true;
                 }
                 default:
