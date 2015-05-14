@@ -112,7 +112,9 @@
     <AndroidResource Include="Resources\layout\UpdateLayout.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\simple_list_item_CUST.xml" />
+    <AndroidResource Include="Resources\layout\simple_list_item_CUST.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
     <AndroidResource Include="Resources\values\SplashTheme.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
