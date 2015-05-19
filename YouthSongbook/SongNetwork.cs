@@ -34,7 +34,7 @@ namespace YouthSongbook
         internal static async Task<int> PerformUpdateAsync()
         {
             // The URL strings to get json objects from
-            string baseURL = "http://frbcme.org/test/";
+            string baseURL = "http://handforyou.org/HandInHandSongbook/";
             string updateJsonListURL = baseURL + "updatelist.json";
 
             Dictionary<string, string> updates = JsonToDictionary(await FetchDataAsync(updateJsonListURL));
