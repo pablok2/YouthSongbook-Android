@@ -9,7 +9,7 @@ using HIHSongbook;
 
 namespace YouthSongbook
 {
-    [Activity(Label = "Settings", Icon = "@drawable/icon", Theme = "@android:style/Theme.Holo.Light.DarkActionBar")]
+    [Activity(Label = "Settings", Icon = "@drawable/icon_transparent", Theme = "@android:style/Theme.Holo.Light.DarkActionBar")]
     public class UpdateActivity : Activity
     {
         protected override void OnCreate(Bundle bundle)

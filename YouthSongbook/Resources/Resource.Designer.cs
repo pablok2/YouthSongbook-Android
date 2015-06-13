@@ -28,22 +28,6 @@ namespace HIHSongbook
 		{
 		}
 		
-		public partial class Animation
-		{
-			
-			// aapt resource value: 0x7f040000
-			public const int MyAnimation = 2130968576;
-			
-			static Animation()
-			{
-				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
-			}
-			
-			private Animation()
-			{
-			}
-		}
-		
 		public partial class Attribute
 		{
 			
@@ -66,6 +50,9 @@ namespace HIHSongbook
 			// aapt resource value: 0x7f020001
 			public const int Icon = 2130837505;
 			
+			// aapt resource value: 0x7f020002
+			public const int Icon_transparent = 2130837506;
+			
 			static Drawable()
 			{
 				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
@@ -79,26 +66,26 @@ namespace HIHSongbook
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f070006
-			public const int autoUpdateSwitch = 2131165190;
+			// aapt resource value: 0x7f060006
+			public const int autoUpdateSwitch = 2131099654;
 			
-			// aapt resource value: 0x7f070004
-			public const int chordSwitch = 2131165188;
+			// aapt resource value: 0x7f060004
+			public const int chordSwitch = 2131099652;
 			
-			// aapt resource value: 0x7f070005
-			public const int hcSwitch = 2131165189;
+			// aapt resource value: 0x7f060005
+			public const int hcSwitch = 2131099653;
 			
-			// aapt resource value: 0x7f070000
-			public const int list = 2131165184;
+			// aapt resource value: 0x7f060000
+			public const int list = 2131099648;
 			
-			// aapt resource value: 0x7f070003
-			public const int relativeLayout1 = 2131165187;
+			// aapt resource value: 0x7f060003
+			public const int relativeLayout1 = 2131099651;
 			
-			// aapt resource value: 0x7f070001
-			public const int scrollView1 = 2131165185;
+			// aapt resource value: 0x7f060001
+			public const int scrollView1 = 2131099649;
 			
-			// aapt resource value: 0x7f070002
-			public const int songText = 2131165186;
+			// aapt resource value: 0x7f060002
+			public const int songText = 2131099650;
 			
 			static Id()
 			{
@@ -147,11 +134,11 @@ namespace HIHSongbook
 		public partial class String
 		{
 			
-			// aapt resource value: 0x7f060001
-			public const int ApplicationName = 2131099649;
+			// aapt resource value: 0x7f050001
+			public const int ApplicationName = 2131034113;
 			
-			// aapt resource value: 0x7f060000
-			public const int Hello = 2131099648;
+			// aapt resource value: 0x7f050000
+			public const int Hello = 2131034112;
 			
 			static String()
 			{
@@ -166,8 +153,8 @@ namespace HIHSongbook
 		public partial class Style
 		{
 			
-			// aapt resource value: 0x7f050000
-			public const int Theme_Splash = 2131034112;
+			// aapt resource value: 0x7f040000
+			public const int Theme_Splash = 2130968576;
 			
 			static Style()
 			{

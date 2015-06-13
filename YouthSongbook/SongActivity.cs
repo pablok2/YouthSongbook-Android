@@ -9,7 +9,7 @@ using HIHSongbook;
 
 namespace YouthSongbook
 {
-    [Activity(Label = "SongActivity", Icon = "@drawable/icon", Theme = "@android:style/Theme.Holo.Light.DarkActionBar")]
+    [Activity(Label = "SongActivity", Icon = "@drawable/icon_transparent", Theme = "@android:style/Theme.Holo.Light.DarkActionBar")]
     public class SongActivity : Activity
     {
         private TextView songText;

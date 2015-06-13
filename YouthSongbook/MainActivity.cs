@@ -13,7 +13,7 @@ using HIHSongbook;
 
 namespace YouthSongbook
 {
-    [Activity(Label = "Hand in Hand Songbook", Icon = "@drawable/icon",
+    [Activity(Label = "Hand in Hand Songbook", Icon = "@drawable/icon_transparent",
         Theme = "@android:style/Theme.Holo.Light.DarkActionBar")]
     public class MainActivity : Activity
     {
