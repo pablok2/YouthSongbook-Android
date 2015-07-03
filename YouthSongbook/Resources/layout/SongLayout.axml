@@ -5,7 +5,8 @@
     android:layout_height="fill_parent"
     android:keepScreenOn="true"
     android:minWidth="25px"
-    android:minHeight="25px">
+    android:minHeight="25px"
+    android:id="@+id/songLayout">
     <ScrollView
         android:minWidth="25px"
         android:minHeight="25px"

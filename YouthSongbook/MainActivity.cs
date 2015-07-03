@@ -36,7 +36,6 @@ namespace YouthSongbook
                 SongData.LoadDatabase(Assets.Open("songsChords.json"), true);
             }
 
-
             // Load contrast settings
             highContrastEnabled = SongData.GetSetting(Setting.Contrast);
             if (highContrastEnabled)
@@ -57,7 +56,6 @@ namespace YouthSongbook
             {
                 Intent intent = new Intent(this, typeof (SongActivity));
                 intent.PutExtra("SONG_NAME", songNames[e.Position]);
-                intent.PutExtra("CHORDS", chordsEnabled);
                 StartActivity(intent);
                 OverridePendingTransition(Android.Resource.Animation.FadeIn, Android.Resource.Animation.FadeOut);
             };

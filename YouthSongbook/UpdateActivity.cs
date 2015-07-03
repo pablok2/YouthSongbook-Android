@@ -1,6 +1,7 @@
 #region
 
 using Android.App;
+using Android.Graphics;
 using Android.OS;
 using Android.Widget;
 using HIHSongbook;
@@ -16,21 +17,26 @@ namespace YouthSongbook
         {
             // Hook up the view
             base.OnCreate(bundle);
-            if (SongData.GetSetting(Setting.Contrast))
-            {
-                SetContentView(Resource.Layout.UpdateLayoutHC);
-            }
-            else
-            {
-                SetContentView(Resource.Layout.UpdateLayout);
-            }
+            SetContentView(Resource.Layout.UpdateLayout);
 
             Switch updateSwitch = FindViewById<Switch>(Resource.Id.autoUpdateSwitch);
             Switch chordSwitch = FindViewById<Switch>(Resource.Id.chordSwitch);
             Switch hcSwitch = FindViewById<Switch>(Resource.Id.hcSwitch);
 
+            bool highContrast = SongData.GetSetting(Setting.Contrast);
+
+            // Setup the colors of text and the view
+            RelativeLayout updateLayout = FindViewById<RelativeLayout>(Resource.Id.relativeLayout1);
+            updateLayout.SetBackgroundColor(highContrast ? Color.Black : Color.White);
+
+            Color textColor = highContrast ? Color.White : Color.Black;
+            chordSwitch.SetTextColor(textColor);
+            hcSwitch.SetTextColor(textColor);
+            updateSwitch.SetTextColor(textColor);
+
+            // Get the switch settings
             chordSwitch.Checked = SongData.GetSetting(Setting.Chords);
-            hcSwitch.Checked = SongData.GetSetting(Setting.Contrast);
+            hcSwitch.Checked = highContrast;
             updateSwitch.Checked = SongData.GetSetting(Setting.UpdateFlag);
 
             // Auto Update Switch
