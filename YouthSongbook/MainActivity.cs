@@ -8,6 +8,7 @@ using Android.OS;
 using Android.Views;
 using Android.Widget;
 using HIHSongbook;
+using Android.Graphics;
 
 #endregion
 
@@ -22,6 +23,7 @@ namespace YouthSongbook
         private ListView listView;
         private string[] songNames;
         private Bundle thisBundle;
+        private RelativeLayout mainLayout;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -46,6 +48,9 @@ namespace YouthSongbook
             {
                 SetContentView(Resource.Layout.Main);
             }
+
+            //mainLayout = FindViewById<RelativeLayout>(Resource.Id.mainLayout);
+            //mainLayout.SetBackgroundColor(highContrastEnabled ? Color.Black : Color.White);
 
             listView = FindViewById<ListView>(Resource.Id.list);
             listView.FastScrollEnabled = true;

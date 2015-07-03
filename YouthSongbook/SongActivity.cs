@@ -13,9 +13,10 @@ namespace YouthSongbook
     [Activity(Label = "SongActivity", Icon = "@drawable/icon_transparent", Theme = "@android:style/Theme.Holo.Light.DarkActionBar")]
     public class SongActivity : Activity
     {
-        private TextView songText;
-        private LinearLayout songLayout;
-
+        /// <summary>
+        /// Called when the screen gets loaded
+        /// </summary>
+        /// <param name="bundle"></param>
         protected override void OnCreate(Bundle bundle)
         {
             // Hook up the views
@@ -23,8 +24,8 @@ namespace YouthSongbook
             
             SetContentView(Resource.Layout.SongLayout);
 
-            songText = FindViewById<TextView>(Resource.Id.songText);
-            songLayout = FindViewById<LinearLayout>(Resource.Id.songLayout);
+            TextView songText = FindViewById<TextView>(Resource.Id.songText);
+            LinearLayout songLayout = FindViewById<LinearLayout>(Resource.Id.songLayout);
 
             // Get the song title and chords from the intent and set the title
             string songName = Intent.GetStringExtra("SONG_NAME");
