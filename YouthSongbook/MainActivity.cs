@@ -44,6 +44,8 @@ namespace YouthSongbook
             listView.FastScrollEnabled = true;
             listView.ScrollBarStyle = ScrollbarStyles.OutsideInset;
 
+            listView.Adapter = new SongListAdapter(this, SongData.GetAllTitles(false), SongData.GetSetting(Setting.Contrast));
+
             // Send song title to the song displaying class
             listView.ItemClick += (object sender, AdapterView.ItemClickEventArgs e) =>
             {
@@ -77,7 +79,6 @@ namespace YouthSongbook
                 UpdateAsync();
             }
 
-            listView.Adapter = new SongListAdapter(this, songNames, highContrastEnabled);
             listView.SetSelection(selectedItem);
         }
 

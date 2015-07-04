@@ -7,6 +7,7 @@ using Android.Views;
 using Android.Widget;
 using HIHSongbook;
 using Object = Java.Lang.Object;
+using Android.Graphics;
 
 #endregion
 
@@ -69,17 +70,13 @@ namespace YouthSongbook
             View view = convertView; // re-use an existing view, if one is available
             if (view == null) // otherwise create a new one
             {
-                if (highContrastFlag)
-                {
-                    view = context.LayoutInflater.Inflate(Resource.Layout.simple_list_item_CUST, null);
-                }
-                else
-                {
-                    view = context.LayoutInflater.Inflate(Android.Resource.Layout.SimpleListItem1, null);
-                }
+                view = context.LayoutInflater.Inflate(Android.Resource.Layout.SimpleListItem1, null);
             }
 
             view.FindViewById<TextView>(Android.Resource.Id.Text1).Text = items[position];
+            view.FindViewById<TextView>(Android.Resource.Id.Text1).SetTextColor(highContrastFlag ? Color.White : Color.Black);
+            view.FindViewById<TextView>(Android.Resource.Id.Text1).SetBackgroundColor(highContrastFlag ? Color.Black : Color.White);
+
             return view;
         }
 
