@@ -18,7 +18,6 @@ namespace YouthSongbook
         Theme = "@android:style/Theme.Holo.Light.DarkActionBar")]
     public class MainActivity : Activity
     {
-        private bool chordsEnabled;
         private ListView listView;
         private string[] songNames;
         private Bundle thisBundle;
@@ -44,8 +43,6 @@ namespace YouthSongbook
             listView.FastScrollEnabled = true;
             listView.ScrollBarStyle = ScrollbarStyles.OutsideInset;
 
-            listView.Adapter = new SongListAdapter(this, SongData.GetAllTitles(false), SongData.GetSetting(Setting.Contrast));
-
             // Send song title to the song displaying class
             listView.ItemClick += (object sender, AdapterView.ItemClickEventArgs e) =>
             {
@@ -59,26 +56,23 @@ namespace YouthSongbook
 
         protected override void OnResume()
         {
-            // Reload all the initial stuff
-            // for HC layout changes
-            OnCreate(thisBundle);
-
-            bool highContrastEnabled = SongData.GetSetting(Setting.Contrast);
-            listView.SetBackgroundColor(highContrastEnabled ? Color.Black : Color.White);
-
-            base.OnResume();
-            // Get the chords flag
-            chordsEnabled = SongData.GetSetting(Setting.Chords);
-
-            // Reload
-            songNames = SongData.GetAllTitles(chordsEnabled);
-
             // Check for updates
             if (SongData.GetSetting(Setting.UpdateFlag))
             {
                 UpdateAsync();
-            }
+            }  
 
+            base.OnResume();
+
+            // Get flags
+            bool chordsEnabled = SongData.GetSetting(Setting.Chords);
+            bool highContrastEnabled = SongData.GetSetting(Setting.Contrast);
+
+            songNames = SongData.GetAllTitles(chordsEnabled);
+
+            // Reload the adapter
+            listView.Adapter = new SongListAdapter(this, songNames, SongData.GetSetting(Setting.Contrast));
+            listView.SetBackgroundColor(highContrastEnabled ? Color.Black : Color.White);
             listView.SetSelection(selectedItem);
         }
 
