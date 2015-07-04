@@ -19,11 +19,10 @@ namespace YouthSongbook
     public class MainActivity : Activity
     {
         private bool chordsEnabled;
-        private bool highContrastEnabled;
         private ListView listView;
         private string[] songNames;
         private Bundle thisBundle;
-        private RelativeLayout mainLayout;
+        private int selectedItem = 0;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -39,19 +38,8 @@ namespace YouthSongbook
             }
 
             // Load contrast settings
-            highContrastEnabled = SongData.GetSetting(Setting.Contrast);
-            if (highContrastEnabled)
-            {
-                SetContentView(Resource.Layout.MainHC);
-            }
-            else
-            {
-                SetContentView(Resource.Layout.Main);
-            }
-
-            //mainLayout = FindViewById<RelativeLayout>(Resource.Id.mainLayout);
-            //mainLayout.SetBackgroundColor(highContrastEnabled ? Color.Black : Color.White);
-
+            SetContentView(Resource.Layout.Main);
+            
             listView = FindViewById<ListView>(Resource.Id.list);
             listView.FastScrollEnabled = true;
             listView.ScrollBarStyle = ScrollbarStyles.OutsideInset;
@@ -63,6 +51,7 @@ namespace YouthSongbook
                 intent.PutExtra("SONG_NAME", songNames[e.Position]);
                 StartActivity(intent);
                 OverridePendingTransition(Android.Resource.Animation.FadeIn, Android.Resource.Animation.FadeOut);
+                selectedItem = e.Position;
             };
         }
 
@@ -71,6 +60,9 @@ namespace YouthSongbook
             // Reload all the initial stuff
             // for HC layout changes
             OnCreate(thisBundle);
+
+            bool highContrastEnabled = SongData.GetSetting(Setting.Contrast);
+            listView.SetBackgroundColor(highContrastEnabled ? Color.Black : Color.White);
 
             base.OnResume();
             // Get the chords flag
@@ -86,6 +78,7 @@ namespace YouthSongbook
             }
 
             listView.Adapter = new SongListAdapter(this, songNames, highContrastEnabled);
+            listView.SetSelection(selectedItem);
         }
 
         // Menu item(s)
