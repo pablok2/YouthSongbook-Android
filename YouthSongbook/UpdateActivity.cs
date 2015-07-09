@@ -4,7 +4,9 @@ using Android.App;
 using Android.Graphics;
 using Android.OS;
 using Android.Widget;
+using Android.Content;
 using HIHSongbook;
+using Android.Net;
 
 #endregion
 
@@ -42,7 +44,9 @@ namespace YouthSongbook
             Color textColor = highContrast ? Color.White : Color.Black;
             chordSwitch.SetTextColor(textColor);
             hcSwitch.SetTextColor(textColor);
-            updateSwitch.SetTextColor(textColor);          
+            updateSwitch.SetTextColor(textColor);
+
+            TextView weblink = FindViewById<TextView>(Resource.Id.webLink);            
             
             // Auto Update Switch
             updateSwitch.CheckedChange += delegate(object sender, CompoundButton.CheckedChangeEventArgs e)
@@ -60,6 +64,13 @@ namespace YouthSongbook
             hcSwitch.CheckedChange += delegate(object sender, CompoundButton.CheckedChangeEventArgs e)
             {
                 SongData.SetSetting(Setting.Contrast, e.IsChecked);
+            };
+
+
+            weblink.Click += delegate(object sender, System.EventArgs e)
+            {
+                Intent browserIntent = new Intent(Intent.ActionView, Uri.Parse("http://www.handforyou.org"));
+                StartActivity(browserIntent);
             };
         }
     }

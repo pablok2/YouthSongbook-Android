@@ -34,4 +34,16 @@
         p1:layout_marginLeft="50px"
         p1:layout_marginRight="50px"
         p1:layout_marginTop="20px" />
+    <TextView
+        p1:text="Visit handforyou.org"
+        p1:textAppearance="?android:attr/textAppearanceMedium"
+        p1:layout_width="match_parent"
+        p1:layout_height="wrap_content"
+        p1:layout_below="@id/autoUpdateSwitch"
+        p1:id="@+id/webLink"
+        p1:layout_marginBottom="20px"
+        p1:layout_marginTop="20px"
+        p1:layout_marginLeft="50px"
+        p1:layout_marginRight="50px"
+        p1:textColor="@android:color/holo_blue_light" />
 </RelativeLayout>

@@ -93,6 +93,9 @@ namespace HIHSongbook
 			// aapt resource value: 0x7f060004
 			public const int songText = 2131099652;
 			
+			// aapt resource value: 0x7f060009
+			public const int webLink = 2131099657;
+			
 			static Id()
 			{
 				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
