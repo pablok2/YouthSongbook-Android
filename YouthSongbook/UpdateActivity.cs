@@ -46,6 +46,7 @@ namespace YouthSongbook
             hcSwitch.SetTextColor(textColor);
             updateSwitch.SetTextColor(textColor);
 
+            // The weblink object
             TextView weblink = FindViewById<TextView>(Resource.Id.webLink);            
             
             // Auto Update Switch
@@ -66,7 +67,7 @@ namespace YouthSongbook
                 SongData.SetSetting(Setting.Contrast, e.IsChecked);
             };
 
-
+            // When link is clicked
             weblink.Click += delegate(object sender, System.EventArgs e)
             {
                 Intent browserIntent = new Intent(Intent.ActionView, Uri.Parse("http://www.handforyou.org"));

@@ -25,6 +25,12 @@ namespace YouthSongbook
         private Java.Lang.Object[] sectionsObjects;
         private bool highContrastFlag;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="items"></param>
+        /// <param name="highContrast"></param>
         public SongListAdapter(Activity context, string[] items, bool highContrast)
         {
             this.context = context;
@@ -50,21 +56,41 @@ namespace YouthSongbook
             }
         }
 
+        /// <summary>
+        /// Selector object as an array
+        /// </summary>
+        /// <param name="position"></param>
+        /// <returns></returns>
         public override string this[int position]
         {
             get { return items[position]; }
         }
 
+        /// <summary>
+        /// Count
+        /// </summary>
         public override int Count
         {
             get { return items.Length; }
         }
 
+        /// <summary>
+        /// Returns the item id
+        /// </summary>
+        /// <param name="position"></param>
+        /// <returns></returns>
         public override long GetItemId(int position)
         {
             return position;
         }
 
+        /// <summary>
+        /// Gets the table item
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="convertView"></param>
+        /// <param name="parent"></param>
+        /// <returns></returns>
         public override View GetView(int position, View convertView, ViewGroup parent)
         {
             View view = convertView; // re-use an existing view, if one is available
@@ -80,11 +106,21 @@ namespace YouthSongbook
             return view;
         }
 
+        /// <summary>
+        /// Position for section
+        /// </summary>
+        /// <param name="section"></param>
+        /// <returns></returns>
         public int GetPositionForSection(int section)
         {
             return alphaIndex[sections[section]];
         }
 
+        /// <summary>
+        /// Section for position
+        /// </summary>
+        /// <param name="position"></param>
+        /// <returns></returns>
         public int GetSectionForPosition(int position)
         {
             int prevSection = 0;
@@ -100,6 +136,10 @@ namespace YouthSongbook
             return prevSection;
         }
 
+        /// <summary>
+        /// Java objects
+        /// </summary>
+        /// <returns></returns>
         Object[] ISectionIndexer.GetSections()
         {
             return sectionsObjects;

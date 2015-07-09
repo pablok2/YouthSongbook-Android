@@ -23,6 +23,10 @@ namespace YouthSongbook
         private Bundle thisBundle;
         private int selectedItem = 0;
 
+        /// <summary>
+        /// Creates the things needed for this screen
+        /// </summary>
+        /// <param name="bundle"></param>
         protected override void OnCreate(Bundle bundle)
         {
             // Hook up the views
@@ -54,6 +58,9 @@ namespace YouthSongbook
             };
         }
 
+        /// <summary>
+        /// Called everytime the screen opens back up
+        /// </summary>
         protected override void OnResume()
         {
             // Check for updates
