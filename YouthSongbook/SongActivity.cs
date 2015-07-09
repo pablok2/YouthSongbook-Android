@@ -10,7 +10,7 @@ using HIHSongbook;
 
 namespace YouthSongbook
 {
-    [Activity(Label = "SongActivity", Icon = "@drawable/icon_transparent", Theme = "@android:style/Theme.Holo.Light.DarkActionBar")]
+    [Activity(Label = "SongActivity", Icon = "@drawable/icon_transparent_blue", Theme = "@android:style/Theme.Holo.Light.DarkActionBar")]
     public class SongActivity : Activity
     {
         /// <summary>
@@ -32,8 +32,8 @@ namespace YouthSongbook
             bool chords = SongData.GetSetting(Setting.Chords);
             bool highContrast = SongData.GetSetting(Setting.Contrast);        
             
-            // Populate the test view with the song
-            this.Title = songName;
+            // Populate the text view with the song
+            this.Title = songName;            
             songText.SetText(SongData.GetSong(songName, chords), TextView.BufferType.Normal);
 
             // Set the color schema

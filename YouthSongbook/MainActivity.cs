@@ -14,7 +14,7 @@ using Android.Graphics;
 
 namespace YouthSongbook
 {
-    [Activity(Label = "Hand in Hand Songbook", Icon = "@drawable/icon_transparent",
+    [Activity(Label = "Hand in Hand Songbook", Icon = "@drawable/icon_transparent_blue",
         Theme = "@android:style/Theme.Holo.Light.DarkActionBar")]
     public class MainActivity : Activity
     {

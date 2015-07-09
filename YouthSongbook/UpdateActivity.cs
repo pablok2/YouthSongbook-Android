@@ -12,7 +12,7 @@ using Android.Net;
 
 namespace YouthSongbook
 {
-    [Activity(Label = "Settings", Icon = "@drawable/icon_transparent", Theme = "@android:style/Theme.Holo.Light.DarkActionBar")]
+    [Activity(Label = "Settings", Icon = "@drawable/icon_transparent_blue", Theme = "@android:style/Theme.Holo.Light.DarkActionBar")]
     public class UpdateActivity : Activity
     {
         /// <summary>

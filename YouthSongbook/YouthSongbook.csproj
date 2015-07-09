@@ -122,8 +122,8 @@
     <AndroidResource Include="Resources\values\SplashTheme.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\drawable\hih_white.png" />
-    <AndroidResource Include="Resources\drawable\Icon_transparent.png" />
+    <AndroidResource Include="Resources\drawable\hih_white_blue.png" />
+    <AndroidResource Include="Resources\drawable\Icon_transparent_blue.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
