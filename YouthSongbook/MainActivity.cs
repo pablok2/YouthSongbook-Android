@@ -20,7 +20,6 @@ namespace YouthSongbook
     {
         private ListView listView;
         private string[] songNames;
-        private Bundle thisBundle;
         private int selectedItem = 0;
 
         /// <summary>
@@ -31,7 +30,6 @@ namespace YouthSongbook
         {
             // Hook up the views
             base.OnCreate(bundle);
-            thisBundle = bundle;
 
             // Check for a living database and create if need be
             if (!SongData.DataBaseExists)
@@ -39,6 +37,12 @@ namespace YouthSongbook
                 SongData.LoadDatabase(Assets.Open("songs.json"), false);
                 SongData.LoadDatabase(Assets.Open("songsChords.json"), true);
             }
+
+            // Check for updates
+            if (SongData.GetSetting(Setting.UpdateFlag))
+            {
+                UpdateAsync();
+            } 
 
             // Load contrast settings
             SetContentView(Resource.Layout.Main);
@@ -62,13 +66,7 @@ namespace YouthSongbook
         /// Called everytime the screen opens back up
         /// </summary>
         protected override void OnResume()
-        {
-            // Check for updates
-            if (SongData.GetSetting(Setting.UpdateFlag))
-            {
-                UpdateAsync();
-            }  
-
+        {        
             base.OnResume();
 
             // Get flags
